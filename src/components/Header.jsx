@@ -579,7 +579,12 @@ function TravelScene({ dark }) {
   )
 }
 
-export default function Header({ dark, onToggleDark, panelOpen, onTogglePanel, darkIcon, darkTitle }) {
+const PET_TYPE_ICONS = {
+  'dog-small': '🐕', 'dog-medium': '🦮', 'dog-large': '🐕‍🦺',
+  'cat': '🐱', 'bird': '🦜', 'rabbit': '🐇',
+}
+
+export default function Header({ dark, onToggleDark, panelOpen, onTogglePanel, darkIcon, darkTitle, pets = [] }) {
   return (
     <header style={{
       height: 160, flexShrink: 0,
@@ -644,6 +649,55 @@ export default function Header({ dark, onToggleDark, panelOpen, onTogglePanel, d
           }}>
             {panelOpen ? '✕' : '☰'}
           </button>
+
+          {/* Pack avatars in header */}
+          {pets.length > 0 && (
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 2,
+              background: dark ? 'rgba(26,22,18,0.8)' : 'rgba(255,253,245,0.88)',
+              padding: '4px 12px 4px 6px',
+              borderRadius: 'var(--radius-full)',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 2px 12px rgba(0,0,0,0.1)',
+            }}>
+              <span style={{ fontSize: 12, marginRight: 4 }}>🐾</span>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                {pets.map((pet, i) => (
+                  <div key={pet.id} title={pet.name} style={{
+                    width: 32, height: 32, borderRadius: '50%',
+                    overflow: 'hidden',
+                    border: `2px solid ${dark ? 'var(--card-dark)' : '#FFF'}`,
+                    marginLeft: i > 0 ? -8 : 0,
+                    zIndex: pets.length - i,
+                    position: 'relative',
+                    background: pet.photo ? 'none' : (dark ? 'var(--card-dark)' : 'var(--sand-light)'),
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 16,
+                    boxShadow: '0 1px 4px rgba(0,0,0,0.12)',
+                    transition: 'transform 0.2s var(--ease-bounce)',
+                    cursor: 'default',
+                  }}
+                    onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.15) translateY(-2px)'}
+                    onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                  >
+                    {pet.photo ? (
+                      <img src={pet.photo} alt={pet.name} style={{
+                        width: '100%', height: '100%', objectFit: 'cover',
+                      }} />
+                    ) : (
+                      PET_TYPE_ICONS[pet.type] || '🐾'
+                    )}
+                  </div>
+                ))}
+              </div>
+              <span style={{
+                fontSize: 11, fontWeight: 600, marginLeft: 6,
+                color: dark ? 'var(--text-secondary-dark)' : 'var(--text-secondary)',
+              }}>
+                {pets.length === 1 ? pets[0].name : `${pets.length} pack`}
+              </span>
+            </div>
+          )}
 
           <span style={{
             fontSize: 14, fontWeight: 500,

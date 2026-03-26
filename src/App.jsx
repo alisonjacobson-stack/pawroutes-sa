@@ -122,6 +122,7 @@ export default function App() {
         onTogglePanel={() => setPanelOpen(p => !p)}
         darkIcon={darkIcon}
         darkTitle={darkTitle}
+        pets={pets}
       />
 
       {/* Main layout */}

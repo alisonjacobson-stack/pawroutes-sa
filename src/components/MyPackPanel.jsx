@@ -188,12 +188,16 @@ export default function MyPackPanel({ pets, onUpdatePets, dark, collapsed, onTog
             return (
               <span key={p.id} title={p.name} style={{
                 display: 'inline-flex', alignItems: 'center', gap: 4,
-                padding: '3px 8px', fontSize: 11, fontWeight: 500,
+                padding: p.photo ? '2px 8px 2px 2px' : '3px 8px', fontSize: 11, fontWeight: 500,
                 background: dark ? 'var(--card-dark)' : '#FFF',
                 border: `1px solid ${dark ? 'var(--border-dark)' : 'var(--border)'}`,
                 borderRadius: 'var(--radius-full)',
               }}>
-                {typeInfo?.icon} {p.name}
+                {p.photo ? (
+                  <img src={p.photo} alt={p.name} style={{
+                    width: 20, height: 20, borderRadius: '50%', objectFit: 'cover',
+                  }} />
+                ) : typeInfo?.icon} {p.name}
               </span>
             )
           })}
@@ -321,10 +325,81 @@ export default function MyPackPanel({ pets, onUpdatePets, dark, collapsed, onTog
   )
 }
 
+// Reusable photo upload widget
+function PhotoUpload({ photo, onPhotoChange, dark, size = 56 }) {
+  const fileRef = React.useRef(null)
+
+  const handleFile = (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (!file.type.startsWith('image/')) return
+    const reader = new FileReader()
+    reader.onload = () => onPhotoChange(reader.result)
+    reader.readAsDataURL(file)
+  }
+
+  return (
+    <div style={{ position: 'relative', flexShrink: 0 }}>
+      <div
+        onClick={() => fileRef.current?.click()}
+        style={{
+          width: size, height: size, borderRadius: '50%',
+          overflow: 'hidden', cursor: 'pointer',
+          background: photo ? 'none' : (dark ? 'var(--bg-dark)' : 'var(--sand-light)'),
+          border: `2px dashed ${photo ? 'transparent' : (dark ? 'var(--border-dark)' : 'var(--border)')}`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          transition: 'border-color 0.15s, transform 0.15s',
+        }}
+        onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.borderColor = 'var(--terracotta)' }}
+        onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.borderColor = photo ? 'transparent' : (dark ? 'var(--border-dark)' : 'var(--border)') }}
+        title={photo ? 'Change photo' : 'Add photo'}
+      >
+        {photo ? (
+          <img src={photo} alt="Pet" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        ) : (
+          <div style={{ textAlign: 'center', lineHeight: 1.2 }}>
+            <div style={{ fontSize: size * 0.32 }}>📷</div>
+            <div style={{ fontSize: Math.max(8, size * 0.14), color: 'var(--text-muted)', fontWeight: 500 }}>Photo</div>
+          </div>
+        )}
+      </div>
+      {photo && (
+        <button onClick={(e) => { e.stopPropagation(); onPhotoChange(null) }} style={{
+          position: 'absolute', top: -4, right: -4,
+          width: 18, height: 18, borderRadius: '50%',
+          background: 'var(--terracotta)', color: '#FFF',
+          border: 'none', cursor: 'pointer', fontSize: 10, fontWeight: 700,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
+        }}>✕</button>
+      )}
+      <input ref={fileRef} type="file" accept="image/*" onChange={handleFile}
+        style={{ display: 'none' }} />
+    </div>
+  )
+}
+
+// Pet avatar (photo or emoji fallback)
+function PetAvatar({ pet, size = 36 }) {
+  const typeInfo = PET_TYPES.find(t => t.key === pet.type)
+  if (pet.photo) {
+    return (
+      <img src={pet.photo} alt={pet.name} style={{
+        width: size, height: size, borderRadius: '50%',
+        objectFit: 'cover', flexShrink: 0,
+        border: '2px solid var(--terracotta)',
+        boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+      }} />
+    )
+  }
+  return <span style={{ fontSize: size * 0.6, flexShrink: 0 }}>{typeInfo?.icon}</span>
+}
+
 function PetCard({ pet, dark, editing, onEdit, onSave, onRemove, onCancel }) {
   const [name, setName] = useState(pet.name)
   const [type, setType] = useState(pet.type)
   const [needs, setNeeds] = useState(pet.needs || [])
+  const [photo, setPhoto] = useState(pet.photo || null)
   const typeInfo = PET_TYPES.find(t => t.key === pet.type)
 
   const toggleNeed = (key) => setNeeds(p => p.includes(key) ? p.filter(k => k !== key) : [...p, key])
@@ -337,15 +412,19 @@ function PetCard({ pet, dark, editing, onEdit, onSave, onRemove, onCancel }) {
         border: `1px solid ${dark ? 'var(--border-dark)' : 'var(--border)'}`,
         borderRadius: 'var(--radius-md)',
       }}>
-        <input value={name} onChange={e => setName(e.target.value)} placeholder="Pet name"
-          style={{
-            width: '100%', padding: '8px 10px', marginBottom: 8,
-            background: dark ? 'var(--bg-dark)' : 'var(--sand-light)',
-            border: `1px solid ${dark ? 'var(--border-dark)' : 'var(--border)'}`,
-            borderRadius: 'var(--radius-sm)', fontFamily: 'inherit', fontSize: 13,
-            color: 'inherit', outline: 'none',
-          }}
-        />
+        {/* Photo + Name row */}
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 10 }}>
+          <PhotoUpload photo={photo} onPhotoChange={setPhoto} dark={dark} size={52} />
+          <input value={name} onChange={e => setName(e.target.value)} placeholder="Pet name"
+            style={{
+              flex: 1, padding: '8px 10px',
+              background: dark ? 'var(--bg-dark)' : 'var(--sand-light)',
+              border: `1px solid ${dark ? 'var(--border-dark)' : 'var(--border)'}`,
+              borderRadius: 'var(--radius-sm)', fontFamily: 'inherit', fontSize: 13,
+              color: 'inherit', outline: 'none',
+            }}
+          />
+        </div>
         <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginBottom: 8 }}>
           {PET_TYPES.map(t => (
             <button key={t.key} onClick={() => setType(t.key)} style={{
@@ -374,7 +453,7 @@ function PetCard({ pet, dark, editing, onEdit, onSave, onRemove, onCancel }) {
           ))}
         </div>
         <div style={{ display: 'flex', gap: 6 }}>
-          <button onClick={() => onSave({ name, type, needs })} style={{
+          <button onClick={() => onSave({ name, type, needs, photo })} style={{
             flex: 1, padding: '7px', background: 'var(--forest)', color: '#FFF',
             border: 'none', borderRadius: 'var(--radius-sm)', cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600, fontSize: 12,
           }}>Save</button>
@@ -396,7 +475,7 @@ function PetCard({ pet, dark, editing, onEdit, onSave, onRemove, onCancel }) {
       border: `1px solid ${dark ? 'var(--border-dark)' : 'var(--border)'}`,
       borderRadius: 'var(--radius-md)',
     }}>
-      <span style={{ fontSize: 22 }}>{typeInfo?.icon}</span>
+      <PetAvatar pet={pet} size={36} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontWeight: 600, fontSize: 14, lineHeight: 1.2 }}>{pet.name}</div>
         <div style={{ fontSize: 11, color: 'var(--text-muted)', display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 2 }}>
@@ -430,6 +509,7 @@ function AddPetForm({ dark, onAdd, onCancel }) {
   const [name, setName] = useState('')
   const [type, setType] = useState('dog-medium')
   const [needs, setNeeds] = useState([])
+  const [photo, setPhoto] = useState(null)
 
   const toggleNeed = (key) => setNeeds(p => p.includes(key) ? p.filter(k => k !== key) : [...p, key])
 
@@ -444,16 +524,20 @@ function AddPetForm({ dark, onAdd, onCancel }) {
         🐾 Add to your pack
       </div>
 
-      <input value={name} onChange={e => setName(e.target.value)} placeholder="Pet name (e.g. Bella, Simba)"
-        autoFocus
-        style={{
-          width: '100%', padding: '8px 10px', marginBottom: 10,
-          background: dark ? 'var(--bg-dark)' : 'var(--sand-light)',
-          border: `1px solid ${dark ? 'var(--border-dark)' : 'var(--border)'}`,
-          borderRadius: 'var(--radius-sm)', fontFamily: 'inherit', fontSize: 13,
-          color: 'inherit', outline: 'none', boxSizing: 'border-box',
-        }}
-      />
+      {/* Photo + Name row */}
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 10 }}>
+        <PhotoUpload photo={photo} onPhotoChange={setPhoto} dark={dark} size={60} />
+        <input value={name} onChange={e => setName(e.target.value)} placeholder="Pet name (e.g. Bella, Simba)"
+          autoFocus
+          style={{
+            flex: 1, padding: '8px 10px',
+            background: dark ? 'var(--bg-dark)' : 'var(--sand-light)',
+            border: `1px solid ${dark ? 'var(--border-dark)' : 'var(--border)'}`,
+            borderRadius: 'var(--radius-sm)', fontFamily: 'inherit', fontSize: 13,
+            color: 'inherit', outline: 'none', boxSizing: 'border-box',
+          }}
+        />
+      </div>
 
       <div style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', marginBottom: 6 }}>
         Pet type
@@ -491,7 +575,7 @@ function AddPetForm({ dark, onAdd, onCancel }) {
 
       <div style={{ display: 'flex', gap: 6 }}>
         <button
-          onClick={() => name.trim() && onAdd({ name: name.trim(), type, needs })}
+          onClick={() => name.trim() && onAdd({ name: name.trim(), type, needs, photo })}
           disabled={!name.trim()}
           style={{
             flex: 1, padding: '9px', background: name.trim() ? 'var(--terracotta)' : 'var(--sand)',
