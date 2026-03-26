@@ -225,71 +225,204 @@ body.dark .leaflet-popup-tip {
 }
 
 /* ============================================
-   Header character animations
+   Header character animations — Disney quality
+   Key fix: animations are on INNER <g> elements
+   that don't have SVG transform attributes, so
+   CSS transforms work correctly.
    ============================================ */
-@keyframes driveRight {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(8px); }
+
+/* Vehicle movement — gentle sway like driving on dirt road */
+@keyframes driveRumble {
+  0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+  15% { transform: translateX(2px) translateY(-1px) rotate(-0.3deg); }
+  30% { transform: translateX(4px) translateY(0) rotate(0.2deg); }
+  50% { transform: translateX(6px) translateY(-1.5px) rotate(-0.4deg); }
+  70% { transform: translateX(4px) translateY(0) rotate(0.2deg); }
+  85% { transform: translateX(2px) translateY(-0.5px) rotate(-0.2deg); }
 }
 
-@keyframes bobUp {
+/* Cyclist bob — more playful, like pedaling */
+@keyframes cyclistBob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-2px) rotate(-0.5deg); }
+  50% { transform: translateY(0) rotate(0.3deg); }
+  75% { transform: translateY(-2px) rotate(-0.3deg); }
+}
+
+/* Hikers — walking bob */
+@keyframes hikeBob {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
+  30% { transform: translateY(-2px); }
+  60% { transform: translateY(0); }
+  80% { transform: translateY(-1px); }
 }
 
-@keyframes wagTail {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(12deg); }
-  75% { transform: rotate(-12deg); }
+/* Tail wag — fast & happy */
+@keyframes tailWag {
+  0% { transform: rotate(-15deg); }
+  25% { transform: rotate(20deg); }
+  50% { transform: rotate(-18deg); }
+  75% { transform: rotate(22deg); }
+  100% { transform: rotate(-15deg); }
 }
 
+/* Tongue flap — wobbly */
 @keyframes tongueFlap {
-  0%, 100% { transform: scaleY(1); }
-  50% { transform: scaleY(1.3); }
+  0%, 100% { transform: scaleY(1) scaleX(1); }
+  25% { transform: scaleY(1.2) scaleX(0.9); }
+  50% { transform: scaleY(0.85) scaleX(1.1); }
+  75% { transform: scaleY(1.15) scaleX(0.95); }
 }
 
-@keyframes pedalSpin {
+/* Wheel spin */
+@keyframes wheelSpin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-@keyframes meerkatPeek {
-  0%, 80%, 100% { transform: translateY(0); }
-  90% { transform: translateY(-4px); }
+/* Meerkat head turn — looking around */
+@keyframes meerkatLook {
+  0%, 40%, 100% { transform: rotate(0deg); }
+  10% { transform: rotate(-8deg); }
+  25% { transform: rotate(10deg); }
+  50% { transform: rotate(0deg) translateY(-3px); }
+  60% { transform: translateY(0); }
 }
 
-@keyframes sunPulse {
-  0%, 100% { transform: scale(1); opacity: 0.9; }
-  50% { transform: scale(1.04); opacity: 1; }
+/* Baby meerkat — curious hop */
+@keyframes babyHop {
+  0%, 70%, 100% { transform: translateY(0); }
+  80% { transform: translateY(-5px); }
+  90% { transform: translateY(0); }
+  95% { transform: translateY(-2px); }
 }
 
+/* Meerkat peek from burrow */
+@keyframes burrowPeek {
+  0%, 60%, 100% { transform: translateY(6px); }
+  70% { transform: translateY(0); }
+  90% { transform: translateY(0); }
+}
+
+/* Sun — gentle breathe with ray rotation */
+@keyframes sunBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+@keyframes raysSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Cat blink */
+@keyframes catBlink {
+  0%, 42%, 48%, 100% { transform: scaleY(1); }
+  45% { transform: scaleY(0.1); }
+}
+
+/* Bird flying */
 @keyframes birdFly {
-  0% { transform: translateX(0) translateY(0); }
-  25% { transform: translateX(3px) translateY(-2px); }
-  50% { transform: translateX(6px) translateY(0); }
-  75% { transform: translateX(3px) translateY(-2px); }
-  100% { transform: translateX(0) translateY(0); }
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-3px) translateX(2px); }
+  50% { transform: translateY(0) translateX(4px); }
+  75% { transform: translateY(-2px) translateX(2px); }
 }
 
+/* Cloud drift — slow, dreamy */
 @keyframes cloudDrift {
   0% { transform: translateX(0); }
-  100% { transform: translateX(40px); }
+  50% { transform: translateX(25px); }
+  100% { transform: translateX(0); }
 }
 
+/* Dust puff — breathe in/out */
 @keyframes dustPuff {
-  0%, 100% { opacity: 0.35; transform: scale(1); }
-  50% { opacity: 0.15; transform: scale(1.3); }
+  0%, 100% { opacity: 0.3; transform: scale(1) translateX(0); }
+  50% { opacity: 0.1; transform: scale(1.4) translateX(-8px); }
 }
 
-/* Apply animations to header scene groups */
-.header-scene .scene-bakkie { animation: driveRight 4s ease-in-out infinite; }
-.header-scene .scene-bicycle { animation: bobUp 3s ease-in-out infinite 0.5s; }
-.header-scene .scene-meerkats { animation: meerkatPeek 5s ease-in-out infinite; }
-.header-scene .scene-hikers { animation: bobUp 3.5s ease-in-out infinite 1s; }
-.header-scene .scene-kombi { animation: driveRight 5s ease-in-out infinite 1.5s; }
-.header-scene .scene-sun { animation: sunPulse 6s ease-in-out infinite; }
-.header-scene .scene-clouds { animation: cloudDrift 20s linear infinite; }
-.header-scene .scene-dust { animation: dustPuff 2.5s ease-in-out infinite; }
+/* Dog bounce — happy running */
+@keyframes dogBounce {
+  0%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-3px); }
+  60% { transform: translateY(0); }
+  80% { transform: translateY(-1.5px); }
+}
+
+/* Running legs — alternating */
+@keyframes runLegs {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(5deg); }
+  75% { transform: rotate(-5deg); }
+}
+
+/* Parrot bob */
+@keyframes parrotBob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  30% { transform: translateY(-2px) rotate(-3deg); }
+  60% { transform: translateY(0) rotate(2deg); }
+}
+
+/* Wing flap */
+@keyframes wingFlap {
+  0%, 100% { transform: rotate(-15deg) scaleY(1); }
+  50% { transform: rotate(-15deg) scaleY(0.6); }
+}
+
+/* Scarf flutter */
+@keyframes scarfFlutter {
+  0%, 100% { transform: translateX(0) scaleX(1); }
+  30% { transform: translateX(-3px) scaleX(1.1); }
+  60% { transform: translateX(2px) scaleX(0.95); }
+}
+
+/* Walking legs alternate */
+@keyframes walkLegs {
+  0%, 100% { transform: skewX(0deg); }
+  25% { transform: skewX(3deg); }
+  75% { transform: skewX(-3deg); }
+}
+
+/* ============================================
+   Apply animations — targets inner <g> wrappers
+   that don't have SVG transform attributes
+   ============================================ */
+
+/* Vehicles */
+.header-scene .scene-bakkie { animation: driveRumble 3s ease-in-out infinite; }
+.header-scene .scene-kombi { animation: driveRumble 3.5s ease-in-out infinite 0.8s; }
+.header-scene .scene-bicycle { animation: cyclistBob 1.8s ease-in-out infinite; }
+.header-scene .scene-hikers { animation: hikeBob 2.5s ease-in-out infinite 0.3s; }
+
+/* Animals */
+.header-scene .scene-meerkats { animation: meerkatLook 4s ease-in-out infinite; }
+.header-scene .scene-meerkat-baby { animation: babyHop 3s ease-in-out infinite 1s; }
+.header-scene .scene-meerkat-peek { animation: burrowPeek 5s ease-in-out infinite 2s; }
+.header-scene .scene-meerkat-look { animation: meerkatLook 4s ease-in-out infinite; }
+.header-scene .scene-tail-wag { animation: tailWag 0.4s ease-in-out infinite; }
+.header-scene .scene-tongue { animation: tongueFlap 1.5s ease-in-out infinite; }
+.header-scene .scene-dog-bounce { animation: dogBounce 1.2s ease-in-out infinite; }
+.header-scene .scene-run-legs { animation: runLegs 0.6s ease-in-out infinite; }
+.header-scene .scene-cat-blink { animation: catBlink 4s ease-in-out infinite; }
+
+/* Parrot */
+.header-scene .scene-parrot-bob { animation: parrotBob 2s ease-in-out infinite; }
+.header-scene .scene-wing-flap { animation: wingFlap 0.8s ease-in-out infinite; transform-origin: 42px 8px; }
+
+/* Environment */
+.header-scene .scene-sun { animation: sunBreathe 6s ease-in-out infinite; }
+.header-scene .scene-sun-rays { animation: raysSpin 30s linear infinite; }
+.header-scene .scene-clouds { animation: cloudDrift 25s ease-in-out infinite; }
+.header-scene .scene-dust { animation: dustPuff 2s ease-in-out infinite; }
+.header-scene .scene-bird-fly { animation: birdFly 3s ease-in-out infinite; }
+
+/* Wheels spin */
+.header-scene .scene-wheel-spin { animation: wheelSpin 1.5s linear infinite; }
+
+/* Accessories */
+.header-scene .scene-scarf-flutter { animation: scarfFlutter 1.2s ease-in-out infinite; }
+.header-scene .scene-walk-legs { animation: walkLegs 1.5s ease-in-out infinite; }
 
 /* ============================================
    Micro-animations
