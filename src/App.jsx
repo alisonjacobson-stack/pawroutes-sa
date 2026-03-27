@@ -158,15 +158,15 @@ export default function App() {
 
       {/* Main layout */}
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden', position: 'relative' }}>
-        {/* Side panel */}
+        {/* Side panel — wider when no route selected to emphasise the start flow */}
         <aside
           style={{
-            width: 380, flexShrink: 0,
+            width: selectedRoute ? 380 : 480, flexShrink: 0,
             background: dark ? 'var(--bg-dark)' : 'var(--cream)',
             borderRight: `1px solid ${dark ? 'var(--border-dark)' : 'var(--border)'}`,
             display: 'flex', flexDirection: 'column',
             overflow: 'hidden',
-            transition: 'transform 0.3s var(--ease-out)',
+            transition: 'width 0.4s var(--ease-out), transform 0.3s var(--ease-out)',
             zIndex: 50,
           }}
           className="side-panel"
@@ -243,6 +243,42 @@ export default function App() {
             cities={CITIES}
             dark={dark}
           />
+
+          {/* Map hint when no route selected */}
+          {!selectedRoute && (
+            <div style={{
+              position: 'absolute', inset: 0, zIndex: 40,
+              background: dark ? 'rgba(26,22,18,0.4)' : 'rgba(255,253,245,0.35)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              pointerEvents: 'none',
+              backdropFilter: 'blur(1px)',
+            }}>
+              <div style={{
+                textAlign: 'center', padding: '24px 32px',
+                background: dark ? 'rgba(26,22,18,0.85)' : 'rgba(255,253,245,0.9)',
+                borderRadius: 'var(--radius-lg)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                backdropFilter: 'blur(12px)',
+                maxWidth: 320,
+              }}>
+                <div style={{ fontSize: 40, marginBottom: 8 }}>🐾</div>
+                <div style={{
+                  fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 600,
+                  color: dark ? 'var(--text-dark)' : 'var(--text)',
+                  marginBottom: 6,
+                }}>
+                  Your route will appear here
+                </div>
+                <div style={{
+                  fontSize: 13,
+                  color: dark ? 'var(--text-secondary-dark)' : 'var(--text-secondary)',
+                  lineHeight: 1.5,
+                }}>
+                  ← Pick a route from the panel to see the toll-free path and all pet-friendly stops mapped out
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Floating action buttons — LEFT column (route tools) */}
           {selectedRoute && (

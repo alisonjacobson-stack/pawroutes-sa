@@ -315,15 +315,62 @@ export default function RoutePanel({
       {/* Route selector */}
       {!selectedRoute && (
         <div style={{ flex: 1, overflowY: 'auto', padding: '0 16px 16px' }}>
+          {/* Onboarding hero */}
           <div style={{
-            fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 600,
-            color: 'var(--terracotta)', marginBottom: 4,
+            background: dark
+              ? 'linear-gradient(135deg, rgba(196,97,59,0.12) 0%, rgba(59,107,74,0.08) 100%)'
+              : 'linear-gradient(135deg, rgba(196,97,59,0.08) 0%, rgba(59,107,74,0.06) 100%)',
+            borderRadius: 'var(--radius-lg)',
+            padding: '20px 18px',
+            marginBottom: 16,
+            border: `1px solid ${dark ? 'rgba(196,97,59,0.15)' : 'rgba(196,97,59,0.12)'}`,
           }}>
-            Choose your adventure
+            <div style={{ fontSize: 32, marginBottom: 8 }}>🐾🚗💨</div>
+            <div style={{
+              fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 700,
+              color: dark ? 'var(--text-dark)' : 'var(--text)',
+              lineHeight: 1.2, marginBottom: 6,
+            }}>
+              Where are you &amp; your pack headed?
+            </div>
+            <p style={{
+              fontSize: 14, color: dark ? 'var(--text-secondary-dark)' : 'var(--text-secondary)',
+              margin: 0, lineHeight: 1.5,
+            }}>
+              Pick a route below. We'll show you the <strong style={{ color: 'var(--forest)' }}>toll-free alternative</strong>, every pet-friendly stop, and exactly how much you'll save.
+            </p>
+            {/* Quick stats */}
+            <div style={{
+              display: 'flex', gap: 12, marginTop: 14,
+              flexWrap: 'wrap',
+            }}>
+              {[
+                { icon: '🛣️', label: `${routes.length} routes`, color: 'var(--forest)' },
+                { icon: '📍', label: `${stops.length} pet stops`, color: 'var(--terracotta)' },
+                { icon: '💰', label: 'R85–R580 saved', color: 'var(--ochre)' },
+              ].map((s, i) => (
+                <span key={i} style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 5,
+                  fontSize: 12, fontWeight: 600,
+                  padding: '5px 10px',
+                  background: dark ? 'var(--card-dark)' : 'rgba(255,255,255,0.8)',
+                  borderRadius: 'var(--radius-full)',
+                  color: s.color,
+                }}>
+                  {s.icon} {s.label}
+                </span>
+              ))}
+            </div>
           </div>
-          <p style={{ fontSize: 13, color: dark ? 'var(--text-secondary-dark)' : 'var(--text-secondary)', marginBottom: 16, lineHeight: 1.5 }}>
-            Select a route to see toll-free alternatives and pet-friendly stops along the way.
-          </p>
+
+          <div style={{
+            fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em',
+            color: dark ? 'var(--text-secondary-dark)' : 'var(--text-muted)',
+            marginBottom: 10, paddingLeft: 2,
+            display: 'flex', alignItems: 'center', gap: 6,
+          }}>
+            <span style={{ fontSize: 14 }}>👇</span> Pick your route
+          </div>
 
           {/* Wishlist section */}
           {RouteWishlist}
