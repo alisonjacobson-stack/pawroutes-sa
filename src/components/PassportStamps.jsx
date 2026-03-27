@@ -7,6 +7,7 @@ const STAMP_DESIGNS = {
   'cpt-garden': { emoji: '🐋', label: 'GARDEN ROUTE', subtitle: 'Whale Coast', color: '#2D6A4F' },
   'jhb-blm': { emoji: '🌾', label: 'BLOEMFONTEIN', subtitle: 'Free State Plains', color: '#B5850B' },
   'pta-plk': { emoji: '🌳', label: 'LIMPOPO', subtitle: 'Baobab Country', color: '#6B4226' },
+  'jhb-garden': { emoji: '🌿', label: 'GARDEN ROUTE', subtitle: 'Karoo to Coast', color: '#3B8A5A' },
 }
 
 export default function PassportStamps({ completedRoutes = [], routes = [], dark, open, onClose }) {

@@ -19,7 +19,7 @@ export const STOPS = [
   {
     id: 'parys-pecan',
     routeId: 'jhb-cpt',
-    alsoOnRoute: ['jhb-blm'],
+    alsoOnRoute: ['jhb-blm', 'jhb-garden'],
     category: 'farm',
     name: 'Pecan Nut Farm Stall',
     town: 'Parys',
@@ -33,7 +33,7 @@ export const STOPS = [
   {
     id: 'parys-vaal-walk',
     routeId: 'jhb-cpt',
-    alsoOnRoute: ['jhb-blm'],
+    alsoOnRoute: ['jhb-blm', 'jhb-garden'],
     category: 'park',
     name: 'Vaal River Dog Walk',
     town: 'Parys',
@@ -46,7 +46,7 @@ export const STOPS = [
   {
     id: 'kroonstad-vet',
     routeId: 'jhb-cpt',
-    alsoOnRoute: ['jhb-blm'],
+    alsoOnRoute: ['jhb-blm', 'jhb-garden'],
     category: 'vet',
     name: 'Kroonstad Animal Hospital',
     town: 'Kroonstad',
@@ -120,6 +120,7 @@ export const STOPS = [
   {
     id: 'graaff-reinet-farm',
     routeId: 'jhb-cpt',
+    alsoOnRoute: ['jhb-garden'],
     category: 'farm',
     name: 'Karoo Lamb Farm Kitchen',
     town: 'Graaff-Reinet',
@@ -133,6 +134,7 @@ export const STOPS = [
   {
     id: 'graaff-reinet-stay',
     routeId: 'jhb-cpt',
+    alsoOnRoute: ['jhb-garden'],
     category: 'stay',
     name: 'De Oude Meul Guest Farm',
     town: 'Graaff-Reinet',
@@ -149,6 +151,7 @@ export const STOPS = [
   {
     id: 'graaff-reinet-kothuize',
     routeId: 'jhb-cpt',
+    alsoOnRoute: ['jhb-garden'],
     category: 'stay',
     name: 'De Kothuize Heritage Houses',
     town: 'Graaff-Reinet',
@@ -164,6 +167,7 @@ export const STOPS = [
   {
     id: 'karoo-bloemhof',
     routeId: 'jhb-cpt',
+    alsoOnRoute: ['jhb-garden'],
     category: 'stay',
     name: 'Bloemhof Karoo Farm',
     town: 'Graaff-Reinet',
@@ -179,6 +183,7 @@ export const STOPS = [
   {
     id: 'graaff-reinet-desolation',
     routeId: 'jhb-cpt',
+    alsoOnRoute: ['jhb-garden'],
     category: 'park',
     name: 'Valley of Desolation Viewpoint',
     town: 'Graaff-Reinet',
@@ -191,6 +196,7 @@ export const STOPS = [
   {
     id: 'graaff-reinet-vet',
     routeId: 'jhb-cpt',
+    alsoOnRoute: ['jhb-garden'],
     category: 'vet',
     name: 'Valley of Desolation Vet',
     town: 'Graaff-Reinet',
@@ -205,7 +211,7 @@ export const STOPS = [
   {
     id: 'oudtshoorn-restaurant',
     routeId: 'jhb-cpt',
-    alsoOnRoute: ['cpt-garden'],
+    alsoOnRoute: ['cpt-garden', 'jhb-garden'],
     category: 'restaurant',
     name: 'Jemima\'s Restaurant',
     town: 'Oudtshoorn',
@@ -554,6 +560,7 @@ export const STOPS = [
   {
     id: 'robertson-farm',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'farm',
     name: 'Viljoensdrift Wine Estate',
     town: 'Robertson',
@@ -567,6 +574,7 @@ export const STOPS = [
   {
     id: 'montagu-stay',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'stay',
     name: 'Montagu Country Hotel',
     town: 'Montagu',
@@ -583,6 +591,7 @@ export const STOPS = [
   {
     id: 'swellendam-stay',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'stay',
     name: 'Aan de Oever Guest House',
     town: 'Swellendam',
@@ -598,6 +607,7 @@ export const STOPS = [
   {
     id: 'mosselbaai-beach',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'park',
     name: 'Klein Brak Dog Beach',
     town: 'Mossel Bay',
@@ -610,6 +620,7 @@ export const STOPS = [
   {
     id: 'wilderness-park',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'park',
     name: 'Wilderness Beach & Boardwalk',
     town: 'Wilderness',
@@ -623,6 +634,7 @@ export const STOPS = [
   {
     id: 'wilderness-hamilton',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'stay',
     name: 'Hamilton House',
     town: 'Wilderness',
@@ -637,7 +649,9 @@ export const STOPS = [
   // NEW: Beejuice Cafe — real Wilderness restaurant
   {
     id: 'wilderness-beejuice',
+    alsoOnRoute: ['jhb-garden'],
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'restaurant',
     name: 'Beejuice Café',
     town: 'Wilderness',
@@ -649,8 +663,10 @@ export const STOPS = [
   },
   // NEW: Sedgefield dog beach
   {
+    alsoOnRoute: ['jhb-garden'],
     id: 'sedgefield-beach',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'park',
     name: 'Sedgefield Dog-Friendly Beach',
     town: 'Sedgefield',
@@ -663,6 +679,7 @@ export const STOPS = [
   {
     id: 'knysna-restaurant',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'restaurant',
     name: 'East Head Café',
     town: 'Knysna',
@@ -677,6 +694,7 @@ export const STOPS = [
   {
     id: 'knysna-village-cafe',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'restaurant',
     name: 'The Village Café',
     town: 'Knysna',
@@ -685,11 +703,13 @@ export const STOPS = [
     description: 'Dog-friendly café with outdoor patio on a lush lawn overlooking the lagoon. Breakfast and lunch menu.',
     petPolicy: 'Dogs welcome on the outdoor patio. Water bowls provided.',
     rating: 4.3,
+    alsoOnRoute: ['jhb-garden'],
   },
   // NEW: Knysna Leisure Isle walk
   {
     id: 'knysna-leisure-isle',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'park',
     name: 'Leisure Isle Walk',
     town: 'Knysna',
@@ -697,12 +717,14 @@ export const STOPS = [
     coords: [-34.0600, 23.0400],
     description: 'Flat walk around Leisure Isle with lagoon views and birdlife. Dogs welcome — keep on leash and clean up. Popular sundowner spot.',
     petPolicy: 'Dogs welcome on leash. Owners must clean up.',
+    alsoOnRoute: ['jhb-garden'],
     rating: 4.5,
   },
   // NEW: Inyathi Guest Lodge — real Knysna stay
   {
     id: 'knysna-inyathi',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'stay',
     name: 'Inyathi Guest Lodge',
     town: 'Knysna',
@@ -718,12 +740,14 @@ export const STOPS = [
   {
     id: 'plett-bramon',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'restaurant',
     name: 'Bramon Boutique Wine Estate',
     town: 'Plettenberg Bay (The Crags)',
     road: 'N2',
     coords: [-33.9400, 23.4600],
     description: 'Boutique wine estate overlooking the Tsitsikamma Mountains. Fresh tapas, cheese platters, and seafood. Dogs welcome outdoors.',
+    alsoOnRoute: ['jhb-garden'],
     petPolicy: 'Pets welcome in outdoor seating area. Dogs on leash.',
     rating: 4.7,
     phone: '044 534 8007',
@@ -732,10 +756,12 @@ export const STOPS = [
   {
     id: 'plett-natures-way',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'farm',
     name: 'Nature\'s Way Farm Stall',
     town: 'Plettenberg Bay (The Crags)',
     road: 'N2',
+    alsoOnRoute: ['jhb-garden'],
     coords: [-33.9350, 23.4700],
     description: 'Family-run farm stall on a working dairy farm. Fresh milk, cheese, and homemade goods. Dogs welcome in the outdoor area.',
     petPolicy: 'Dogs welcome outdoors',
@@ -745,12 +771,14 @@ export const STOPS = [
   {
     id: 'plett-plettenberg-hotel',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'stay',
     name: 'The Plettenberg Hotel',
     town: 'Plettenberg Bay',
     road: 'Church St',
     coords: [-34.0550, 23.3700],
     description: 'Luxury hotel with ocean views that welcomes pets in specially selected rooms. Pet bowls, pet menus, and treats available.',
+    alsoOnRoute: ['jhb-garden'],
     petPolicy: 'Pets in selected rooms — pet bowls, menus, and treats provided. Book pet-friendly room.',
     petCapacity: { maxPets: 2, maxLargeDogs: 1, noCats: true, multiPetFriendly: true },
     rating: 4.8,
@@ -761,7 +789,9 @@ export const STOPS = [
   {
     id: 'plett-dog-beach',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'park',
+    alsoOnRoute: ['jhb-garden'],
     name: 'Robberg Beach (Dog Zone)',
     town: 'Plettenberg Bay',
     road: 'Robberg Rd',
@@ -773,6 +803,7 @@ export const STOPS = [
   {
     id: 'plett-park',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'park',
     name: 'Robberg Nature Reserve',
     town: 'Plettenberg Bay',
@@ -785,8 +816,10 @@ export const STOPS = [
   {
     id: 'george-vet',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'vet',
     name: 'Garden Route Veterinary Hospital',
+    alsoOnRoute: ['jhb-garden'],
     town: 'George',
     road: 'York St',
     coords: [-33.9600, 22.4600],
@@ -800,6 +833,7 @@ export const STOPS = [
   {
     id: 'knysna-vet',
     routeId: 'cpt-garden',
+    alsoOnRoute: ['jhb-garden'],
     category: 'vet',
     name: 'Knysna Veterinary Clinic',
     town: 'Knysna',
