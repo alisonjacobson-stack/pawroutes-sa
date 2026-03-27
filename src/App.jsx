@@ -13,6 +13,14 @@ import ShareTrip from './components/ShareTrip'
 import Achievements from './components/Achievements'
 import WeatherRoute from './components/WeatherRoute'
 import OfflineDownload from './components/OfflineDownload'
+import TravelStats from './components/TravelStats'
+import PassportStamps from './components/PassportStamps'
+import PetTravelCard from './components/PetTravelCard'
+import PackIntroCard from './components/PackIntroCard'
+import TripWrapped from './components/TripWrapped'
+import TripCountdown from './components/TripCountdown'
+import RouteWishlist from './components/RouteWishlist'
+import PostcardGenerator from './components/PostcardGenerator'
 import { ROUTES, CITIES } from './data/routes'
 import { STOPS, STOP_CATEGORIES } from './data/stops'
 import { SEASONAL_ALERTS } from './data/packList'
@@ -37,8 +45,31 @@ export default function App() {
   const [showShare, setShowShare] = useState(false)
   const [showAchievements, setShowAchievements] = useState(false)
   const [showWeather, setShowWeather] = useState(false)
-  const [completedRoutes, setCompletedRoutes] = useState([])
+  const [showStats, setShowStats] = useState(false)
+  const [showStamps, setShowStamps] = useState(false)
+  const [showTravelCard, setShowTravelCard] = useState(false)
+  const [showPackCard, setShowPackCard] = useState(false)
+  const [showWrapped, setShowWrapped] = useState(false)
+  const [showPostcard, setShowPostcard] = useState(false)
+  const [completedRoutes, setCompletedRoutes] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('pawroutes-completed') || '[]') } catch { return [] }
+  })
+  const [wishlist, setWishlist] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('pawroutes-wishlist') || '[]') } catch { return [] }
+  })
   const [reviewCount, setReviewCount] = useState(0)
+
+  // Persist completed routes and wishlist
+  React.useEffect(() => {
+    localStorage.setItem('pawroutes-completed', JSON.stringify(completedRoutes))
+  }, [completedRoutes])
+  React.useEffect(() => {
+    localStorage.setItem('pawroutes-wishlist', JSON.stringify(wishlist))
+  }, [wishlist])
+
+  const toggleWishlist = useCallback((routeId) => {
+    setWishlist(prev => prev.includes(routeId) ? prev.filter(id => id !== routeId) : [...prev, routeId])
+  }, [])
 
   // Active seasonal alerts count
   const currentMonth = new Date().getMonth() + 1
@@ -195,6 +226,10 @@ export default function App() {
             onToggleFilter={handleToggleFilter}
             dark={dark}
             pets={pets}
+            wishlist={wishlist}
+            onToggleWishlist={toggleWishlist}
+            TripCountdown={selectedRoute ? <TripCountdown route={selectedRoute} pets={pets} dark={dark} /> : null}
+            RouteWishlist={!selectedRoute ? <RouteWishlist routes={ROUTES} wishlist={wishlist} onToggleWishlist={toggleWishlist} dark={dark} /> : null}
           />
         </aside>
 
@@ -232,6 +267,10 @@ export default function App() {
                 onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
                 onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
               >📤</button>
+              <button onClick={() => setShowPostcard(true)} style={fabStyle()} title="Send a Postcard"
+                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
+                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+              >💌</button>
             </div>
           )}
 
@@ -241,6 +280,44 @@ export default function App() {
             display: 'flex', flexDirection: 'column', gap: 8,
             zIndex: 50,
           }}>
+            {/* Travel Stats */}
+            <button onClick={() => setShowStats(true)}
+              style={fabStyle()} title="Travel Stats"
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            >📊</button>
+
+            {/* Passport Stamps */}
+            <button onClick={() => setShowStamps(true)}
+              style={fabStyle()} title="Passport Stamps"
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            >🛂</button>
+
+            {/* Trip Wrapped */}
+            <button onClick={() => setShowWrapped(true)}
+              style={{...fabStyle('linear-gradient(135deg, var(--terracotta), var(--ochre))'), color: '#FFF'}}
+              title="Your PawRoutes Wrapped!"
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            >🎁</button>
+
+            {/* Share Cards */}
+            {pets.length > 0 && (
+              <>
+                <button onClick={() => setShowTravelCard(true)}
+                  style={fabStyle()} title="Pet Travel Card"
+                  onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
+                  onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                >🪪</button>
+                <button onClick={() => setShowPackCard(true)}
+                  style={fabStyle()} title="Pack Intro Card"
+                  onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
+                  onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                >👥</button>
+              </>
+            )}
+
             {/* Achievements */}
             <button onClick={() => setShowAchievements(true)}
               style={fabStyle()} title="Achievements & Badges"
@@ -374,6 +451,13 @@ export default function App() {
       <ShareTrip open={showShare} onClose={() => setShowShare(false)} route={selectedRoute} stops={visibleStops} pets={pets} dark={dark} />
       <Achievements open={showAchievements} onClose={() => setShowAchievements(false)} pets={pets} completedRoutes={completedRoutes} reviewCount={reviewCount} dark={dark} />
       <WeatherRoute open={showWeather} onClose={() => setShowWeather(false)} route={selectedRoute} dark={dark} />
+      <TravelStats open={showStats} onClose={() => setShowStats(false)} pets={pets} completedRoutes={completedRoutes} routes={ROUTES} dark={dark} />
+      <PassportStamps open={showStamps} onClose={() => setShowStamps(false)} completedRoutes={completedRoutes} routes={ROUTES} dark={dark}
+        onComplete={(routeId) => { if (!completedRoutes.includes(routeId)) setCompletedRoutes(prev => [...prev, routeId]) }} />
+      <PetTravelCard open={showTravelCard} onClose={() => setShowTravelCard(false)} pet={pets[0]} completedRoutes={completedRoutes} routes={ROUTES} dark={dark} />
+      <PackIntroCard open={showPackCard} onClose={() => setShowPackCard(false)} pets={pets} dark={dark} />
+      <TripWrapped open={showWrapped} onClose={() => setShowWrapped(false)} pets={pets} completedRoutes={completedRoutes} routes={ROUTES} dark={dark} />
+      <PostcardGenerator open={showPostcard} onClose={() => setShowPostcard(false)} stops={STOPS} pets={pets} dark={dark} />
 
       {/* Responsive styles */}
       <style>{`

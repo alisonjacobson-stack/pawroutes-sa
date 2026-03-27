@@ -15,7 +15,7 @@ function PawScore({ score, size = 20 }) {
   )
 }
 
-function RouteCard({ route, isSelected, onClick, dark }) {
+function RouteCard({ route, isSelected, onClick, dark, isWishlisted, onToggleWishlist }) {
   const bg = dark ? 'var(--card-dark)' : '#FFF'
   const border = isSelected ? 'var(--terracotta)' : dark ? 'var(--border-dark)' : 'var(--border)'
   return (
@@ -49,7 +49,23 @@ function RouteCard({ route, isSelected, onClick, dark }) {
             {route.freeRoute.road}
           </span>
         </div>
-        <PawScore score={route.pawScore} size={14} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          {onToggleWishlist && (
+            <span
+              onClick={(e) => { e.stopPropagation(); onToggleWishlist() }}
+              style={{
+                fontSize: 16, cursor: 'pointer', transition: 'transform 0.2s',
+                filter: isWishlisted ? 'none' : 'grayscale(1) opacity(0.4)',
+              }}
+              title={isWishlisted ? 'Remove from bucket list' : 'Add to bucket list'}
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.3)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            >
+              {isWishlisted ? '❤️' : '🤍'}
+            </span>
+          )}
+          <PawScore score={route.pawScore} size={14} />
+        </div>
       </div>
 
       <div style={{
@@ -290,6 +306,7 @@ function RouteDetail({ route, stops, showToll, onToggleToll, dark, pets }) {
 export default function RoutePanel({
   routes, selectedRoute, onSelectRoute, stops,
   showToll, onToggleToll, activeFilters, onToggleFilter, dark, pets,
+  wishlist, onToggleWishlist, TripCountdown, RouteWishlist,
 }) {
   return (
     <div style={{
@@ -308,6 +325,9 @@ export default function RoutePanel({
             Select a route to see toll-free alternatives and pet-friendly stops along the way.
           </p>
 
+          {/* Wishlist section */}
+          {RouteWishlist}
+
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {routes.map(route => (
               <RouteCard
@@ -316,6 +336,8 @@ export default function RoutePanel({
                 isSelected={false}
                 onClick={() => onSelectRoute(route)}
                 dark={dark}
+                isWishlisted={wishlist?.includes(route.id)}
+                onToggleWishlist={onToggleWishlist ? () => onToggleWishlist(route.id) : undefined}
               />
             ))}
           </div>
@@ -340,6 +362,9 @@ export default function RoutePanel({
           <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 4, lineHeight: 1.2 }}>
             {selectedRoute.name}
           </h2>
+
+          {/* Trip Countdown */}
+          {TripCountdown}
 
           <RouteDetail
             route={selectedRoute}

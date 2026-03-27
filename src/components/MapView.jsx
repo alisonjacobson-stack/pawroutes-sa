@@ -139,23 +139,24 @@ export default function MapView({
             <div style={{ padding: '12px 14px', minWidth: 220, maxWidth: 280 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
                 <span style={{ fontSize: 20 }}>{STOP_CATEGORIES[stop.category]?.icon}</span>
-                <strong style={{ fontSize: 14, lineHeight: 1.3 }}>{stop.name}</strong>
+                <strong style={{ fontSize: 14, lineHeight: 1.3, color: dark ? '#E8DCC0' : '#2C2418' }}>{stop.name}</strong>
               </div>
-              <div style={{ fontSize: 12, color: '#6B5E4A', marginBottom: 6 }}>
+              <div style={{ fontSize: 12, color: dark ? '#A89880' : '#6B5E4A', marginBottom: 6 }}>
                 {stop.town} · {stop.road}
               </div>
-              <p style={{ fontSize: 13, lineHeight: 1.5, marginBottom: 8, color: '#2C2418' }}>
+              <p style={{ fontSize: 13, lineHeight: 1.5, marginBottom: 8, color: dark ? '#D4C8B0' : '#2C2418' }}>
                 {stop.description}
               </p>
               <div style={{
-                fontSize: 12, padding: '6px 10px', background: '#F5ECD7',
-                borderRadius: 8, color: '#6B4C2C',
+                fontSize: 12, padding: '6px 10px',
+                background: dark ? 'rgba(245,236,215,0.1)' : '#F5ECD7',
+                borderRadius: 8, color: dark ? '#D4C0A0' : '#6B4C2C',
               }}>
                 🐾 {stop.petPolicy}
               </div>
               {stop.phone && (
-                <div style={{ fontSize: 12, marginTop: 6, color: '#3B6B4A' }}>
-                  📞 <a href={`tel:${stop.phone}`} style={{ color: '#3B6B4A' }}>{stop.phone}</a>
+                <div style={{ fontSize: 12, marginTop: 6, color: dark ? '#7AAA8A' : '#3B6B4A' }}>
+                  📞 <a href={`tel:${stop.phone}`} style={{ color: dark ? '#7AAA8A' : '#3B6B4A' }}>{stop.phone}</a>
                   {stop.afterHours && <span style={{ marginLeft: 6, color: '#C4613B' }}>· 24/7</span>}
                 </div>
               )}
