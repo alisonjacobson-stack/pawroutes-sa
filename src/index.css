@@ -93,6 +93,14 @@ body.dark {
 .leaflet-container {
   background: var(--sand) !important;
   font-family: var(--font-body) !important;
+  z-index: 1 !important;
+}
+
+/* Ensure Leaflet panes don't escape their container */
+.leaflet-pane,
+.leaflet-tile-pane,
+.leaflet-overlay-pane {
+  z-index: 1 !important;
 }
 
 .leaflet-control-zoom {

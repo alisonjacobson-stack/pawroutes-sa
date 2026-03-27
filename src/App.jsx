@@ -173,7 +173,8 @@ export default function App() {
             display: 'flex', flexDirection: 'column',
             overflow: 'hidden',
             transition: 'width 0.4s var(--ease-out), transform 0.3s var(--ease-out)',
-            zIndex: 50,
+            position: 'relative',
+            zIndex: 10,
           }}
           className="side-panel"
         >
@@ -241,7 +242,7 @@ export default function App() {
         </aside>
 
         {/* Map */}
-        <main style={{ flex: 1, position: 'relative', overflow: 'hidden', minWidth: 0 }}>
+        <main style={{ flex: 1, position: 'relative', overflow: 'hidden', minWidth: 0, zIndex: 1 }}>
           <MapView
             selectedRoute={selectedRoute}
             showTollRoute={showToll}
