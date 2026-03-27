@@ -21,6 +21,9 @@ import TripWrapped from './components/TripWrapped'
 import TripCountdown from './components/TripCountdown'
 import RouteWishlist from './components/RouteWishlist'
 import PostcardGenerator from './components/PostcardGenerator'
+import ListVenueModal from './components/ListVenueModal'
+import ListVenueCTA from './components/ListVenueCTA'
+import PoliciesModal from './components/PoliciesModal'
 import { ROUTES, CITIES } from './data/routes'
 import { STOPS, STOP_CATEGORIES } from './data/stops'
 import { SEASONAL_ALERTS } from './data/packList'
@@ -51,6 +54,8 @@ export default function App() {
   const [showPackCard, setShowPackCard] = useState(false)
   const [showWrapped, setShowWrapped] = useState(false)
   const [showPostcard, setShowPostcard] = useState(false)
+  const [showListVenue, setShowListVenue] = useState(false)
+  const [showPolicies, setShowPolicies] = useState(false)
   const [completedRoutes, setCompletedRoutes] = useState(() => {
     try { return JSON.parse(localStorage.getItem('pawroutes-completed') || '[]') } catch { return [] }
   })
@@ -154,6 +159,7 @@ export default function App() {
         darkIcon={darkIcon}
         darkTitle={darkTitle}
         pets={pets}
+        onListVenue={() => setShowListVenue(true)}
       />
 
       {/* Main layout */}
@@ -230,11 +236,12 @@ export default function App() {
             onToggleWishlist={toggleWishlist}
             TripCountdown={selectedRoute ? <TripCountdown route={selectedRoute} pets={pets} dark={dark} /> : null}
             RouteWishlist={!selectedRoute ? <RouteWishlist routes={ROUTES} wishlist={wishlist} onToggleWishlist={toggleWishlist} dark={dark} /> : null}
+            onListVenue={() => setShowListVenue(true)}
           />
         </aside>
 
         {/* Map */}
-        <main style={{ flex: 1, position: 'relative' }}>
+        <main style={{ flex: 1, position: 'relative', overflow: 'hidden', minWidth: 0 }}>
           <MapView
             selectedRoute={selectedRoute}
             showTollRoute={showToll}
@@ -275,6 +282,9 @@ export default function App() {
                   lineHeight: 1.5,
                 }}>
                   ← Pick a route from the panel to see the toll-free path and all pet-friendly stops mapped out
+                </div>
+                <div style={{ marginTop: 12, pointerEvents: 'auto' }}>
+                  <ListVenueCTA variant="inline" onClick={() => setShowListVenue(true)} dark={dark} />
                 </div>
               </div>
             </div>
@@ -494,6 +504,8 @@ export default function App() {
       <PackIntroCard open={showPackCard} onClose={() => setShowPackCard(false)} pets={pets} dark={dark} />
       <TripWrapped open={showWrapped} onClose={() => setShowWrapped(false)} pets={pets} completedRoutes={completedRoutes} routes={ROUTES} dark={dark} />
       <PostcardGenerator open={showPostcard} onClose={() => setShowPostcard(false)} stops={STOPS} pets={pets} dark={dark} />
+      <ListVenueModal open={showListVenue} onClose={() => setShowListVenue(false)} dark={dark} onViewPolicies={() => { setShowListVenue(false); setShowPolicies(true) }} />
+      <PoliciesModal open={showPolicies} onClose={() => setShowPolicies(false)} dark={dark} />
 
       {/* Responsive styles */}
       <style>{`

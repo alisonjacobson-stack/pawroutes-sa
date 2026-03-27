@@ -1,5 +1,6 @@
 import React from 'react'
 import { STOP_CATEGORIES } from '../data/stops'
+import ListVenueCTA from './ListVenueCTA'
 import { getMultiPetStopScore, getRecommendedStopInterval } from './MyPackPanel'
 
 const FUEL_RATE = 24 // R/litre
@@ -306,7 +307,7 @@ function RouteDetail({ route, stops, showToll, onToggleToll, dark, pets }) {
 export default function RoutePanel({
   routes, selectedRoute, onSelectRoute, stops,
   showToll, onToggleToll, activeFilters, onToggleFilter, dark, pets,
-  wishlist, onToggleWishlist, TripCountdown, RouteWishlist,
+  wishlist, onToggleWishlist, TripCountdown, RouteWishlist, onListVenue,
 }) {
   return (
     <div style={{
@@ -388,6 +389,13 @@ export default function RoutePanel({
               />
             ))}
           </div>
+
+          {/* List Your Venue CTA */}
+          {onListVenue && (
+            <div style={{ marginTop: 16 }}>
+              <ListVenueCTA variant="secondary" onClick={onListVenue} dark={dark} />
+            </div>
+          )}
         </div>
       )}
 

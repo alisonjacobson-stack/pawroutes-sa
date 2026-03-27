@@ -1,4 +1,5 @@
 import React from 'react'
+import ListVenueCTA from './ListVenueCTA'
 
 // Disney-quality SVG illustrations — pets & owners on a SA road trip
 // Animations use wrapper <g> so CSS transforms don't conflict with SVG positioning
@@ -585,7 +586,7 @@ const PET_TYPE_ICONS = {
   'cat': '🐱', 'bird': '🦜', 'rabbit': '🐇',
 }
 
-export default function Header({ dark, onToggleDark, panelOpen, onTogglePanel, darkIcon, darkTitle, pets = [] }) {
+export default function Header({ dark, onToggleDark, panelOpen, onTogglePanel, darkIcon, darkTitle, pets = [], onListVenue }) {
   return (
     <header style={{
       height: 160, flexShrink: 0,
@@ -650,6 +651,9 @@ export default function Header({ dark, onToggleDark, panelOpen, onTogglePanel, d
           }}>
             {panelOpen ? '✕' : '☰'}
           </button>
+
+          {/* List Your Venue CTA */}
+          {onListVenue && <ListVenueCTA variant="primary" onClick={onListVenue} dark={dark} />}
 
           {/* Pack avatars in header */}
           {pets.length > 0 && (
