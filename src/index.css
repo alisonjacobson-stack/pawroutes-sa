@@ -342,19 +342,16 @@ body.dark .leaflet-popup-tip {
   50% { opacity: 0.1; transform: scale(1.4) translateX(-8px); }
 }
 
-/* Dog bounce — happy running */
+/* Dog bounce — happy running (subtle so legs stay attached) */
 @keyframes dogBounce {
   0%, 100% { transform: translateY(0); }
-  30% { transform: translateY(-3px); }
-  60% { transform: translateY(0); }
-  80% { transform: translateY(-1.5px); }
+  50% { transform: translateY(-2px); }
 }
 
-/* Running legs — alternating */
+/* Running legs — no rotation, just subtle vertical shift to simulate gallop */
 @keyframes runLegs {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(5deg); }
-  75% { transform: rotate(-5deg); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(1px); }
 }
 
 /* Parrot bob */
@@ -377,11 +374,10 @@ body.dark .leaflet-popup-tip {
   60% { transform: translateX(2px) scaleX(0.95); }
 }
 
-/* Walking legs alternate */
+/* Walking legs — subtle sway, no skew (keeps legs attached to body) */
 @keyframes walkLegs {
-  0%, 100% { transform: skewX(0deg); }
-  25% { transform: skewX(3deg); }
-  75% { transform: skewX(-3deg); }
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(1px); }
 }
 
 /* ============================================

@@ -375,13 +375,11 @@ function TravelScene({ dark }) {
           <circle cx="13.5" cy="18" r="0.6" fill="white" />
           <path d="M7 24 Q10 27 13 24" stroke="#2C2418" strokeWidth="1" fill="none" strokeLinecap="round" />
           <path d="M10 29 L10 52" stroke={dark ? '#8A4A6A' : '#C06A8A'} strokeWidth="5" strokeLinecap="round" />
-          {/* Walking legs — animated */}
-          <g className="scene-walk-legs">
-            <path d="M10 52 L4 72" stroke={dark ? '#4A6B8A' : '#6A8AA8'} strokeWidth="4" strokeLinecap="round" />
-            <path d="M10 52 L18 72" stroke={dark ? '#4A6B8A' : '#6A8AA8'} strokeWidth="4" strokeLinecap="round" />
-          </g>
-          <rect x="1" y="70" width="7" height="4" rx="2" fill={dark ? '#6B4C2C' : '#8B6040'} />
-          <rect x="15" y="70" width="7" height="4" rx="2" fill={dark ? '#6B4C2C' : '#8B6040'} />
+          {/* Walking legs — no animation wrapper, legs drawn statically to stay connected */}
+          <path d="M10 52 L5 72" stroke={dark ? '#4A6B8A' : '#6A8AA8'} strokeWidth="4" strokeLinecap="round" />
+          <path d="M10 52 L17 72" stroke={dark ? '#4A6B8A' : '#6A8AA8'} strokeWidth="4" strokeLinecap="round" />
+          <rect x="2" y="70" width="7" height="4" rx="2" fill={dark ? '#6B4C2C' : '#8B6040'} />
+          <rect x="14" y="70" width="7" height="4" rx="2" fill={dark ? '#6B4C2C' : '#8B6040'} />
           <line x1="0" y1="34" x2="-5" y2="72" stroke={dark ? '#8B6B42' : '#A08050'} strokeWidth="2.5" strokeLinecap="round" />
 
           {/* Cat bubble backpack */}
@@ -444,13 +442,16 @@ function TravelScene({ dark }) {
             <g className="scene-tail-wag" style={{ transformOrigin: '66px 46px' }}>
               <path d="M66 46 Q60 34 63 28" stroke="#C4956A" strokeWidth="4" fill="none" strokeLinecap="round" />
             </g>
-            {/* Running legs */}
-            <g className="scene-run-legs">
-              <line x1="74" y1="58" x2="70" y2="74" stroke="#B08558" strokeWidth="3" strokeLinecap="round" />
-              <line x1="80" y1="58" x2="84" y2="74" stroke="#B08558" strokeWidth="3" strokeLinecap="round" />
-              <line x1="90" y1="56" x2="86" y2="74" stroke="#B08558" strokeWidth="3" strokeLinecap="round" />
-              <line x1="95" y1="55" x2="100" y2="72" stroke="#B08558" strokeWidth="3" strokeLinecap="round" />
-            </g>
+            {/* Legs — drawn from hip to paw, all inside bounce group so they move together */}
+            <line x1="74" y1="58" x2="72" y2="72" stroke="#B08558" strokeWidth="3" strokeLinecap="round" />
+            <line x1="80" y1="58" x2="82" y2="72" stroke="#B08558" strokeWidth="3" strokeLinecap="round" />
+            <line x1="90" y1="56" x2="88" y2="72" stroke="#B08558" strokeWidth="3" strokeLinecap="round" />
+            <line x1="95" y1="55" x2="97" y2="72" stroke="#B08558" strokeWidth="3" strokeLinecap="round" />
+            {/* Paws */}
+            <ellipse cx="72" cy="73" rx="3" ry="1.5" fill="#B08558" />
+            <ellipse cx="82" cy="73" rx="3" ry="1.5" fill="#B08558" />
+            <ellipse cx="88" cy="73" rx="3" ry="1.5" fill="#B08558" />
+            <ellipse cx="97" cy="73" rx="3" ry="1.5" fill="#B08558" />
             <rect x="90" y="47" width="12" height="3" rx="1.5" fill="#E05040" />
           </g>
           <path d="M56 46 Q70 50 76 48" stroke={dark ? '#8B6B42' : '#A08050'} strokeWidth="1.2" fill="none" strokeDasharray="3 2" />
