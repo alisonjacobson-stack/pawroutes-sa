@@ -242,7 +242,7 @@ export default function App() {
         </aside>
 
         {/* Map */}
-        <main style={{ flex: 1, position: 'relative', overflow: 'hidden', minWidth: 0, zIndex: 1 }}>
+        <main style={{ flex: 1, position: 'relative', overflow: 'hidden', minWidth: 0, zIndex: 1, width: 0 }}>
           <MapView
             selectedRoute={selectedRoute}
             showTollRoute={showToll}

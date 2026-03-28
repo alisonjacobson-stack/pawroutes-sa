@@ -26,6 +26,7 @@ export default function ListVenueModal({ open, onClose, dark, onViewPolicies }) 
   // Step 1 — Venue Basics
   const [venueName, setVenueName] = useState('')
   const [category, setCategory] = useState('')
+  const [customCategory, setCustomCategory] = useState('')
   const [town, setTown] = useState('')
   const [road, setRoad] = useState('')
   const [province, setProvince] = useState('')
@@ -75,7 +76,7 @@ export default function ListVenueModal({ open, onClose, dark, onViewPolicies }) 
 
   // Validation per step
   const stepValid = [
-    () => venueName.trim() && category && town.trim() && road.trim(),
+    () => venueName.trim() && category && (category !== 'other' || customCategory.trim()) && town.trim() && road.trim(),
     () => petPolicy.trim(),
     () => contactName.trim() && phone.trim() && email.trim() && isOwner && consentVerify,
     () => agreePolicy,
@@ -187,7 +188,7 @@ export default function ListVenueModal({ open, onClose, dark, onViewPolicies }) 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
           {catObj.map(([key, { label, icon }]) => (
             <button
-              key={key} onClick={() => setCategory(key)}
+              key={key} onClick={() => { setCategory(key); setCustomCategory('') }}
               style={{
                 padding: '10px 12px', fontSize: 13, fontWeight: category === key ? 700 : 400,
                 background: category === key ? 'var(--terracotta)' : (dark ? 'var(--card-dark)' : 'var(--sand-light)'),
@@ -201,7 +202,29 @@ export default function ListVenueModal({ open, onClose, dark, onViewPolicies }) 
               <span style={{ fontSize: 18 }}>{icon}</span> {label}
             </button>
           ))}
+          <button
+            onClick={() => setCategory('other')}
+            style={{
+              padding: '10px 12px', fontSize: 13, fontWeight: category === 'other' ? 700 : 400,
+              background: category === 'other' ? 'var(--terracotta)' : (dark ? 'var(--card-dark)' : 'var(--sand-light)'),
+              color: category === 'other' ? '#FFF' : 'inherit',
+              border: `1px solid ${category === 'other' ? 'transparent' : dark ? 'var(--border-dark)' : 'var(--border)'}`,
+              borderRadius: 'var(--radius-sm)', cursor: 'pointer', fontFamily: 'inherit',
+              display: 'flex', alignItems: 'center', gap: 8,
+              transition: 'all 0.15s',
+            }}
+          >
+            <span style={{ fontSize: 18 }}>✨</span> Other
+          </button>
         </div>
+        {category === 'other' && (
+          <input
+            style={{ ...inputStyle, marginTop: 8 }}
+            value={customCategory}
+            onChange={e => setCustomCategory(e.target.value)}
+            placeholder="Describe your venue type (e.g. Pet Groomer, Dog Beach, Doggy Daycare)"
+          />
+        )}
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, ...fieldGap }}>
@@ -366,7 +389,7 @@ export default function ListVenueModal({ open, onClose, dark, onViewPolicies }) 
   }
 
   const renderStep4 = () => {
-    const catLabel = category ? `${STOP_CATEGORIES[category]?.icon} ${STOP_CATEGORIES[category]?.label}` : ''
+    const catLabel = category === 'other' ? `✨ ${customCategory || 'Other'}` : (category ? `${STOP_CATEGORIES[category]?.icon} ${STOP_CATEGORIES[category]?.label}` : '')
 
     return (
       <>

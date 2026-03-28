@@ -94,6 +94,8 @@ body.dark {
   background: var(--sand) !important;
   font-family: var(--font-body) !important;
   z-index: 1 !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 /* Ensure Leaflet panes don't escape their container */
