@@ -418,6 +418,213 @@ export const translations = {
     'alerts.title': 'Reiswaarskuwings',
     'alerts.seasonal': 'Seisoenale waarskuwings',
   },
+
+  zu: {
+    // Header
+    'header.tagline': 'Hambela mahala nezilwane zakho',
+    'header.darkMode': 'Imodi emnyama',
+    'header.lightMode': 'Imodi ekhanyayo',
+
+    // Routes panel
+    'routes.title': 'Khetha uhambo lwakho',
+    'routes.distance': 'ibanga',
+    'routes.driveTime': 'isikhathi sokushayela',
+    'routes.tollSaved': 'imali yetholiwe esindisiwe',
+    'routes.tollFree': 'Umgwaqo ongenantela',
+    'routes.tollRoute': 'Umgwaqo onentela',
+    'routes.pawScore': 'Amaphuzu Ezinyawo',
+    'routes.stops': 'izindawo zokuma',
+    'routes.fuelEstimate': 'ulinganiso lwephethiloli',
+    'routes.noRoute': 'Khetha umgwaqo ukuze uqale',
+    'routes.via': 'nge',
+
+    // My Pack
+    'pack.title': 'Iqembu Lami',
+    'pack.addPet': 'Engeza isilwane',
+    'pack.noPets': 'Azikho izilwane ezengezwayo',
+    'pack.petName': 'Igama lesilwane',
+    'pack.petType': 'Uhlobo lwesilwane',
+    'pack.breed': 'Uhlobo',
+    'pack.specialNeeds': 'Izidingo ezikhethekile',
+    'pack.removePet': 'Susa isilwane',
+    'pack.vehicle': 'Uhlobo lwemoto',
+    'pack.alerts': 'Izexwayiso zeqembu',
+
+    // Pet types
+    'pet.dogSmall': 'Inja Encane',
+    'pet.dogMedium': 'Inja Ephakathi',
+    'pet.dogLarge': 'Inja Enkulu',
+    'pet.cat': 'Ikati',
+    'pet.bird': 'Inyoni',
+    'pet.rabbit': 'Unogwaja/Okuncane',
+
+    // Special needs
+    'needs.senior': 'Isilwane esidala',
+    'needs.anxious': 'Ukukhathazeka kokuhamba',
+    'needs.reactive': 'Ephendulayo/intambo kuphela',
+    'needs.medical': 'Iphezu kwemithi',
+    'needs.puppy': 'Umhlanyana/ikati elincane',
+    'needs.carsick': 'Uyaguliswa imoto',
+
+    // Stops
+    'stops.farm': 'Izitolo Zasepulazini',
+    'stops.park': 'Amapaki Ezinja Nemizila',
+    'stops.stay': 'Indawo Yokulala Nezilwane',
+    'stops.vet': 'Odokotela Bezilwane Bephuthumayo',
+    'stops.rest': 'Izindawo Zokuphumula',
+    'stops.restaurant': 'Izindawo Zokudla Nezilwane',
+    'stops.navigate': 'Hamba',
+    'stops.call': 'Shayela',
+    'stops.petPolicy': 'Umgomo wesilwane',
+    'stops.afterHours': 'Ngemuva kwamahora',
+    'stops.directions': 'Thola iziqondiso',
+    'stops.verified': 'Kuqinisekisiwe',
+    'stops.stale': 'Kudingeka ukuqinisekiswa',
+    'stops.unverified': 'Akukaqinisekiswa',
+    'stops.confirmInfo': 'Qinisekisa ulwazi lusemsha',
+    'stops.reportIssue': 'Bika inkinga',
+
+    // Stop categories filter
+    'filter.all': 'Zonke izindawo',
+    'filter.farm': 'Izitolo Zasepulazini',
+    'filter.park': 'Amapaki Nemizila',
+    'filter.stay': 'Indawo Yokulala',
+    'filter.vet': 'Odokotela Bezilwane',
+    'filter.rest': 'Izindawo Zokuphumula',
+    'filter.restaurant': 'Izindawo Zokudla',
+
+    // Modals — general
+    'modal.close': 'Vala',
+    'modal.save': 'Gcina',
+    'modal.cancel': 'Khansela',
+    'modal.back': 'Emuva',
+    'modal.next': 'Okulandelayo',
+    'modal.submit': 'Thumela',
+    'modal.done': 'Kwenziwe',
+    'modal.share': 'Yabelana',
+    'modal.download': 'Landa',
+    'modal.delete': 'Susa',
+
+    // Trip Timeline
+    'timeline.title': 'Isikhathi Sohambo',
+    'timeline.empty': 'Khetha umgwaqo ukuze ubone isikhathi sohambo lwakho',
+
+    // Trip Cost Calculator
+    'cost.title': 'Isibali Sezindleko Zohambo',
+    'cost.fuel': 'Uphethiloli (umgwaqo ongenantela)',
+    'cost.tolls': 'Izindleko zentela',
+    'cost.petFees': 'Izimali zezilwane endaweni yokulala',
+    'cost.food': 'Isabelo sokudla',
+    'cost.total': 'Izindleko Ezilindelekile (Ongenantela)',
+    'cost.vsToll': 'kuqhathaniswa Nomentela',
+    'cost.save': 'Gcina',
+
+    // Vet SOS
+    'vet.title': 'Udokotela Wezilwane Ophuthumayo',
+    'vet.nearest': 'Odokotela bezilwane abaseduze',
+    'vet.callNow': 'Shayela manje',
+
+    // Weather
+    'weather.title': 'Isimo Sezulu Somgwaqo',
+    'weather.today': 'Namuhla',
+
+    // Share
+    'share.title': 'Yabelana Ngohambo Lwakho',
+    'share.copy': 'Kopisha isixhumanisi',
+    'share.copied': 'Kukopishiwe!',
+
+    // Achievements
+    'achievements.title': 'Izimpumelelo',
+    'achievements.locked': 'Kukhiyiwe',
+    'achievements.unlocked': 'Kuvuliwe',
+
+    // Passport & stamps
+    'passport.title': 'Iphasiphothi Yesilwane',
+    'stamps.title': 'Izitembu Zephasiphothi',
+
+    // Postcard
+    'postcard.title': 'Yenza Ikhadi Leposi',
+    'postcard.generate': 'Khiqiza',
+
+    // Travel stats
+    'stats.title': 'Izibalo Zohambo',
+    'stats.routesCompleted': 'Imigwaqo eqediwe',
+    'stats.stopsVisited': 'Izindawo ezivakashelwe',
+    'stats.totalDistance': 'Ibanga lonke',
+
+    // List venue CTA
+    'venue.cta': 'Faka indawo yakho',
+    'venue.ctaSub': 'Ibhizinisi lakho lithanda izilwane? Bhalisa!',
+    'venue.title': 'Faka Indawo Yakho',
+    'venue.basics': 'Okuyisisekelo',
+    'venue.petPolicy': 'Umgomo Wesilwane',
+    'venue.contact': 'Xhumana Noqinisekiso',
+    'venue.review': 'Buyekeza Uthumele',
+
+    // Pack list
+    'packList.title': 'Uhlu Lokupakisha',
+    'packList.essential': 'Okubalulekile',
+    'packList.optional': 'Kuhle ukuba nakho',
+
+    // Policies
+    'policies.title': 'Imigomo Yokuhamba Nezilwane',
+
+    // Reviews
+    'reviews.title': 'Izibuyekezo',
+    'reviews.addReview': 'Engeza isibuyekezo',
+    'reviews.noReviews': 'Azikho izibuyekezo okwamanje',
+    'reviews.writeReview': 'Bhala isibuyekezo sakho',
+    'reviews.yourRating': 'Isilinganiso sakho',
+
+    // Analytics
+    'analytics.title': 'Ukuhlaziya',
+    'analytics.engagement': 'Ukuzibandakanya',
+    'analytics.routePopularity': 'Ukuthandwa Kwemigwaqo',
+    'analytics.topStops': 'Izindawo Eziphezulu',
+    'analytics.freshness': 'Ukusha Kwezindawo',
+    'analytics.recentActivity': 'Umsebenzi Wakamuva',
+    'analytics.last7': 'Izinsuku ezingu-7 ezedlule',
+    'analytics.last30': 'Izinsuku ezingu-30 ezedlule',
+    'analytics.allTime': 'Sonke isikhathi',
+
+    // Wishlist
+    'wishlist.title': 'Uhlu Lwezifiso Zemigwaqo',
+    'wishlist.add': 'Engeza ohlwini lwezifiso',
+    'wishlist.remove': 'Susa ohlwini lwezifiso',
+
+    // Common
+    'common.close': 'Vala',
+    'common.save': 'Gcina',
+    'common.cancel': 'Khansela',
+    'common.share': 'Yabelana',
+    'common.loading': 'Iyalayisha...',
+    'common.error': 'Kukhona okungahambanga kahle',
+    'common.retry': 'Zama futhi',
+    'common.km': 'km',
+    'common.yes': 'Yebo',
+    'common.no': 'Cha',
+    'common.and': 'kanye',
+    'common.or': 'noma',
+
+    // Offline
+    'offline.title': 'Landa Ukuze Usebenze Ngaphandle Kwenethiwekhi',
+    'offline.ready': 'Kulungele ukusebenza ngaphandle kwenethiwekhi',
+
+    // Countdown
+    'countdown.title': 'Ukubala Phansi Kohambo',
+    'countdown.days': 'izinsuku',
+    'countdown.until': 'kuze kufike uhambo lwakho',
+
+    // Wrapped
+    'wrapped.title': 'Unyaka Wakho ku-PawRoutes',
+
+    // Night driving
+    'night.toggle': 'Imodi yokushayela ebusuku',
+
+    // Alerts
+    'alerts.title': 'Izexwayiso Zohambo',
+    'alerts.seasonal': 'Izexwayiso zesizini',
+  },
 }
 
 // ── Context & Provider ────────────────────────────────────────────
@@ -456,17 +663,26 @@ export function LanguageProvider({ children }) {
 
 // ── Toggle component ──────────────────────────────────────────────
 
+const LANG_CYCLE = ['en', 'af', 'zu']
+const LANG_LABELS = { en: 'EN', af: 'AF', zu: 'ZU' }
+const LANG_TITLES = {
+  en: 'Skakel na Afrikaans',
+  af: 'Shintshela esiZulwini',
+  zu: 'Switch to English',
+}
+
 export function LanguageToggle({ dark }) {
   const { lang, setLang } = useLanguage()
+  const nextLang = LANG_CYCLE[(LANG_CYCLE.indexOf(lang) + 1) % LANG_CYCLE.length]
 
   return (
     <button
-      onClick={() => setLang(lang === 'en' ? 'af' : 'en')}
-      title={lang === 'en' ? 'Skakel na Afrikaans' : 'Switch to English'}
+      onClick={() => setLang(nextLang)}
+      title={LANG_TITLES[lang]}
       style={{
-        display: 'inline-flex', alignItems: 'center', gap: 4,
+        display: 'inline-flex', alignItems: 'center', gap: 3,
         padding: '4px 10px',
-        fontSize: 12, fontWeight: 700, letterSpacing: '0.05em',
+        fontSize: 11, fontWeight: 700, letterSpacing: '0.05em',
         borderRadius: 'var(--radius-full)',
         border: `1px solid ${dark ? 'var(--border-dark)' : 'rgba(0,0,0,0.12)'}`,
         background: dark ? 'var(--card-dark)' : 'var(--sand-light)',
@@ -475,9 +691,12 @@ export function LanguageToggle({ dark }) {
         transition: 'all 0.15s',
       }}
     >
-      <span style={{ opacity: lang === 'en' ? 1 : 0.4 }}>EN</span>
-      <span style={{ opacity: 0.3 }}>/</span>
-      <span style={{ opacity: lang === 'af' ? 1 : 0.4 }}>AF</span>
+      {LANG_CYCLE.map((l, i) => (
+        <React.Fragment key={l}>
+          {i > 0 && <span style={{ opacity: 0.25 }}>/</span>}
+          <span style={{ opacity: lang === l ? 1 : 0.35 }}>{LANG_LABELS[l]}</span>
+        </React.Fragment>
+      ))}
     </button>
   )
 }
