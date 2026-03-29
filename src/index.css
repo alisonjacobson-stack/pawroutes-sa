@@ -1,45 +1,45 @@
 /* ============================================
    PawRoutes SA — Global Styles
-   Aesthetic: Trail map meets road trip journal
+   Aesthetic: Pixar warmth meets National Geographic
    ============================================ */
 
 :root {
-  /* Earth palette */
-  --sand: #F5ECD7;
-  --sand-light: #FAF6EC;
-  --sand-dark: #E8DCC0;
-  --cream: #FFFDF5;
-  --terracotta: #C4613B;
-  --terracotta-light: #E8855F;
-  --terracotta-dark: #9E3E1F;
-  --forest: #3B6B4A;
-  --forest-light: #5A9A6E;
-  --forest-dark: #264432;
-  --bark: #6B4C2C;
-  --bark-light: #8B6B42;
-  --bark-dark: #4A3118;
-  --sage: #8FA98B;
-  --sage-light: #B3CBB0;
-  --ochre: #D4A843;
-  --ochre-light: #E8C76A;
-  --sky: #6BA3BE;
-  --clay: #B8816C;
+  /* Warm cinematic palette — deeper, richer */
+  --sand: #F0E6D2;
+  --sand-light: #F7F2E8;
+  --sand-dark: #DED0B6;
+  --cream: #FDFAF3;
+  --terracotta: #BF5B3A;
+  --terracotta-light: #D67A5C;
+  --terracotta-dark: #8E3A1C;
+  --forest: #2E5E3F;
+  --forest-light: #4A8A5E;
+  --forest-dark: #1C3C28;
+  --bark: #5C4028;
+  --bark-light: #7A5E3E;
+  --bark-dark: #3A2414;
+  --sage: #7A9878;
+  --sage-light: #A4BFA2;
+  --ochre: #C89A38;
+  --ochre-light: #DEBB5C;
+  --sky: #5A90A8;
+  --clay: #A87060;
 
   /* Functional */
   --bg: var(--cream);
-  --text: #2C2418;
-  --text-secondary: #6B5E4A;
-  --text-muted: #9A8E7A;
-  --border: #DDD4C0;
-  --shadow: rgba(44, 36, 24, 0.08);
-  --shadow-heavy: rgba(44, 36, 24, 0.16);
+  --text: #1E1810;
+  --text-secondary: #5A4E3C;
+  --text-muted: #8A7E6A;
+  --border: #D8CEBC;
+  --shadow: rgba(30, 24, 16, 0.06);
+  --shadow-heavy: rgba(30, 24, 16, 0.14);
 
-  /* Dark mode */
-  --bg-dark: #1A1612;
-  --text-dark: #E8DCC0;
-  --text-secondary-dark: #B8A88A;
-  --card-dark: #252018;
-  --border-dark: #3A3228;
+  /* Dark mode — deeper, more cinematic */
+  --bg-dark: #141210;
+  --text-dark: #E4D8C4;
+  --text-secondary-dark: #A89878;
+  --card-dark: #1E1A14;
+  --border-dark: #302820;
 
   /* Spacing */
   --space-xs: 4px;
@@ -49,20 +49,20 @@
   --space-xl: 32px;
   --space-2xl: 48px;
 
-  /* Radius */
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
+  /* Radius — slightly tighter, less bubbly */
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
   --radius-full: 9999px;
 
-  /* Font */
-  --font-display: 'Caveat', cursive;
+  /* Font — swap Caveat for a classy serif display + keep Outfit for body */
+  --font-display: 'Playfair Display', Georgia, serif;
   --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
 
-  /* Transitions */
+  /* Transitions — slightly slower, more luxurious */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-bounce: cubic-bezier(0.22, 1.2, 0.36, 1);
 }
 
 *, *::before, *::after {
@@ -165,14 +165,14 @@ body.dark .leaflet-popup-tip {
   background: var(--card-dark) !important;
 }
 
-/* Custom paw cursor on map */
+/* Map cursor — clean crosshair, not a paw emoji */
 .paw-cursor {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ctext y='20' font-size='20'%3E🐾%3C/text%3E%3C/svg%3E") 12 12, pointer;
+  cursor: crosshair;
 }
 
-/* Scrollbar styling */
+/* Scrollbar — thin, understated */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -180,15 +180,23 @@ body.dark .leaflet-popup-tip {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
+  background: rgba(0,0,0,0.12);
   border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+  background: rgba(0,0,0,0.2);
 }
 
-/* Noise texture overlay */
+body.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.08);
+}
+
+body.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+/* Film grain overlay — subtle, cinematic */
 .noise-overlay {
   position: fixed;
   top: 0;
@@ -197,8 +205,9 @@ body.dark .leaflet-popup-tip {
   height: 100%;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
 /* Animations */
@@ -395,40 +404,40 @@ body.dark .leaflet-popup-tip {
    that don't have SVG transform attributes
    ============================================ */
 
-/* Vehicles */
-.header-scene .scene-bakkie { animation: driveRumble 3s ease-in-out infinite; }
-.header-scene .scene-kombi { animation: driveRumble 3.5s ease-in-out infinite 0.8s; }
-.header-scene .scene-bicycle { animation: cyclistBob 1.8s ease-in-out infinite; }
-.header-scene .scene-hikers { animation: hikeBob 2.5s ease-in-out infinite 0.3s; }
+/* Vehicles — slower, more natural */
+.header-scene .scene-bakkie { animation: driveRumble 5s ease-in-out infinite; }
+.header-scene .scene-kombi { animation: driveRumble 5.5s ease-in-out infinite 1.2s; }
+.header-scene .scene-bicycle { animation: cyclistBob 3s ease-in-out infinite; }
+.header-scene .scene-hikers { animation: hikeBob 4s ease-in-out infinite 0.5s; }
 
-/* Animals */
-.header-scene .scene-meerkats { animation: meerkatLook 4s ease-in-out infinite; }
-.header-scene .scene-meerkat-baby { animation: babyHop 3s ease-in-out infinite 1s; }
-.header-scene .scene-meerkat-peek { animation: burrowPeek 5s ease-in-out infinite 2s; }
-.header-scene .scene-meerkat-look { animation: meerkatLook 4s ease-in-out infinite; }
-.header-scene .scene-tail-wag { animation: tailWag 0.4s ease-in-out infinite; }
-.header-scene .scene-tongue { animation: tongueFlap 1.5s ease-in-out infinite; }
-.header-scene .scene-dog-bounce { animation: dogBounce 1.2s ease-in-out infinite; }
-.header-scene .scene-run-legs { animation: runLegs 0.6s ease-in-out infinite; }
-.header-scene .scene-cat-blink { animation: catBlink 4s ease-in-out infinite; }
+/* Animals — slower, more deliberate, like real animals */
+.header-scene .scene-meerkats { animation: meerkatLook 6s ease-in-out infinite; }
+.header-scene .scene-meerkat-baby { animation: babyHop 5s ease-in-out infinite 2s; }
+.header-scene .scene-meerkat-peek { animation: burrowPeek 8s ease-in-out infinite 3s; }
+.header-scene .scene-meerkat-look { animation: meerkatLook 6s ease-in-out infinite; }
+.header-scene .scene-tail-wag { animation: tailWag 0.6s ease-in-out infinite; }
+.header-scene .scene-tongue { animation: tongueFlap 2.5s ease-in-out infinite; }
+.header-scene .scene-dog-bounce { animation: dogBounce 2s ease-in-out infinite; }
+.header-scene .scene-run-legs { animation: runLegs 1s ease-in-out infinite; }
+.header-scene .scene-cat-blink { animation: catBlink 6s ease-in-out infinite; }
 
-/* Parrot */
-.header-scene .scene-parrot-bob { animation: parrotBob 2s ease-in-out infinite; }
-.header-scene .scene-wing-flap { animation: wingFlap 0.8s ease-in-out infinite; transform-origin: 42px 8px; }
+/* Parrot — slower bob */
+.header-scene .scene-parrot-bob { animation: parrotBob 3.5s ease-in-out infinite; }
+.header-scene .scene-wing-flap { animation: wingFlap 1.2s ease-in-out infinite; transform-origin: 42px 8px; }
 
-/* Environment */
-.header-scene .scene-sun { animation: sunBreathe 6s ease-in-out infinite; }
-.header-scene .scene-sun-rays { animation: raysSpin 30s linear infinite; }
-.header-scene .scene-clouds { animation: cloudDrift 25s ease-in-out infinite; }
-.header-scene .scene-dust { animation: dustPuff 2s ease-in-out infinite; }
-.header-scene .scene-bird-fly { animation: birdFly 3s ease-in-out infinite; }
+/* Environment — cinematic pace */
+.header-scene .scene-sun { animation: sunBreathe 10s ease-in-out infinite; }
+.header-scene .scene-sun-rays { animation: raysSpin 60s linear infinite; }
+.header-scene .scene-clouds { animation: cloudDrift 40s ease-in-out infinite; }
+.header-scene .scene-dust { animation: dustPuff 3.5s ease-in-out infinite; }
+.header-scene .scene-bird-fly { animation: birdFly 5s ease-in-out infinite; }
 
-/* Wheels spin */
-.header-scene .scene-wheel-spin { animation: wheelSpin 1.5s linear infinite; }
+/* Wheels spin — realistic speed */
+.header-scene .scene-wheel-spin { animation: wheelSpin 2.5s linear infinite; }
 
 /* Accessories */
-.header-scene .scene-scarf-flutter { animation: scarfFlutter 1.2s ease-in-out infinite; }
-.header-scene .scene-walk-legs { animation: walkLegs 1.5s ease-in-out infinite; }
+.header-scene .scene-scarf-flutter { animation: scarfFlutter 2s ease-in-out infinite; }
+.header-scene .scene-walk-legs { animation: walkLegs 2.5s ease-in-out infinite; }
 
 /* ============================================
    Micro-animations
@@ -509,9 +518,9 @@ body.dark .leaflet-popup-tip {
   animation: checkBounce 0.3s var(--ease-bounce);
 }
 
-/* Button hover micro-interaction */
+/* Button hover — subtle lift, not bouncy */
 button {
-  transition: transform 0.15s var(--ease-bounce), box-shadow 0.15s, background 0.15s;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s, background 0.2s;
 }
 
 /* ============================================
