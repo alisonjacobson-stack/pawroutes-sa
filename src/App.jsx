@@ -24,6 +24,7 @@ import PostcardGenerator from './components/PostcardGenerator'
 import ListVenueModal from './components/ListVenueModal'
 import ListVenueCTA from './components/ListVenueCTA'
 import PoliciesModal from './components/PoliciesModal'
+import AmbientMusic from './components/AmbientMusic'
 import { ROUTES, CITIES } from './data/routes'
 import { STOPS, STOP_CATEGORIES } from './data/stops'
 import { SEASONAL_ALERTS } from './data/packList'
@@ -507,6 +508,9 @@ export default function App() {
       <PostcardGenerator open={showPostcard} onClose={() => setShowPostcard(false)} stops={STOPS} pets={pets} dark={dark} />
       <ListVenueModal open={showListVenue} onClose={() => setShowListVenue(false)} dark={dark} onViewPolicies={() => { setShowListVenue(false); setShowPolicies(true) }} />
       <PoliciesModal open={showPolicies} onClose={() => setShowPolicies(false)} dark={dark} />
+
+      {/* Ambient music player */}
+      <AmbientMusic dark={dark} />
 
       {/* Responsive styles */}
       <style>{`
