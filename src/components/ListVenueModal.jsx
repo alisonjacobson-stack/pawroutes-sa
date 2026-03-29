@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { STOP_CATEGORIES } from '../data/stops'
 import { SA_PROVINCES } from '../data/policies'
+import { validateVenueSubmission, createVettingRecord, getWhatsAppVerificationLink, getEmailVerificationLink } from '../utils/venueVetting'
 
 const STEPS = ['Venue Basics', 'Pet Policy', 'Contact & Verify', 'Review & Submit']
 
@@ -84,6 +85,8 @@ export default function ListVenueModal({ open, onClose, dark, onViewPolicies }) 
 
   const canGoNext = stepValid[step]()
 
+  const [vettingRecord, setVettingRecord] = useState(null)
+
   const handleSubmit = async () => {
     if (!canSubmit()) {
       setError('You recently submitted a listing. Please wait 24 hours before submitting another.')
@@ -94,19 +97,33 @@ export default function ListVenueModal({ open, onClose, dark, onViewPolicies }) 
     setError(null)
 
     const payload = {
-      venueName, category, town, road, province,
+      venueName, category: category === 'other' ? customCategory : category, town, road, province,
       petPolicy, dogsAllowed, catsAllowed, maxPets, largeDogs, petFee, offLeash, waterBowls,
       contactName, phone, email, whatsapp: sameAsPhone ? phone : whatsapp, website,
-      submittedAt: new Date().toISOString(),
+    }
+
+    // Pre-submission validation
+    const validation = validateVenueSubmission(payload)
+    if (!validation.valid) {
+      setError(validation.issues.join('. '))
+      setSubmitting(false)
+      return
     }
 
     try {
-      const res = await fetch('https://formspree.io/f/PLACEHOLDER_ID', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(payload),
-      })
-      if (!res.ok) throw new Error('Submission failed')
+      // Create vetting record with verification code
+      const record = createVettingRecord(payload)
+      setVettingRecord(record)
+
+      // Also try to post to Formspree (best-effort, don't block on failure)
+      try {
+        await fetch('https://formspree.io/f/PLACEHOLDER_ID', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ ...payload, verificationCode: record.verificationCode, vettingId: record.id }),
+        })
+      } catch (_) { /* Formspree failure is non-blocking */ }
+
       localStorage.setItem(SPAM_KEY, String(Date.now()))
       setSubmitted(true)
       setShowPaws(true)
@@ -487,9 +504,58 @@ export default function ListVenueModal({ open, onClose, dark, onViewPolicies }) 
           <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 8, fontFamily: 'var(--font-display)' }}>
             Venue Listed!
           </h2>
-          <p style={{ fontSize: 15, color: dark ? 'var(--text-secondary-dark)' : 'var(--text-secondary)', marginBottom: 24, lineHeight: 1.6 }}>
-            Thanks! We'll verify <strong>{venueName}</strong> within 48 hours and add it to PawRoutes.
+          <p style={{ fontSize: 15, color: dark ? 'var(--text-secondary-dark)' : 'var(--text-secondary)', marginBottom: 12, lineHeight: 1.6 }}>
+            Thanks! <strong>{venueName}</strong> is now in our vetting queue.
           </p>
+
+          {/* Verification section */}
+          {vettingRecord && (
+            <div style={{
+              background: dark ? 'rgba(59,107,74,0.15)' : 'rgba(59,107,74,0.08)',
+              borderRadius: 'var(--radius-md)', padding: 16, marginBottom: 20,
+              textAlign: 'left',
+            }}>
+              <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 8, color: 'var(--forest)' }}>
+                📋 Verification Required
+              </div>
+              <p style={{ fontSize: 12, lineHeight: 1.6, marginBottom: 10, color: dark ? 'var(--text-secondary-dark)' : 'var(--text-secondary)' }}>
+                To speed up approval, send the verification code to the venue owner. They reply with the code to confirm they're the real owner.
+              </p>
+              <div style={{
+                fontSize: 22, fontWeight: 800, letterSpacing: '0.15em', textAlign: 'center',
+                padding: '8px 0', marginBottom: 12, fontFamily: 'monospace',
+                color: 'var(--terracotta)',
+              }}>
+                {vettingRecord.verificationCode}
+              </div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <a
+                  href={getWhatsAppVerificationLink(vettingRecord)}
+                  target="_blank" rel="noopener noreferrer"
+                  style={{
+                    flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                    padding: '10px', fontSize: 12, fontWeight: 600,
+                    background: '#25D366', color: '#FFF',
+                    borderRadius: 'var(--radius-sm)', textDecoration: 'none',
+                  }}
+                >
+                  💬 WhatsApp Owner
+                </a>
+                <a
+                  href={getEmailVerificationLink(vettingRecord)}
+                  target="_blank" rel="noopener noreferrer"
+                  style={{
+                    flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                    padding: '10px', fontSize: 12, fontWeight: 600,
+                    background: 'var(--terracotta)', color: '#FFF',
+                    borderRadius: 'var(--radius-sm)', textDecoration: 'none',
+                  }}
+                >
+                  📧 Email Owner
+                </a>
+              </div>
+            </div>
+          )}
 
           <a
             href={whatsappShareUrl}

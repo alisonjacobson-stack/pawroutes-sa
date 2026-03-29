@@ -2,11 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "pawroutes-dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
-      "port": 5173,
-      "cwd": "/Users/alisonjacobson/Downloads/pawroutes-sa"
+      "name": "dev",
+      "runtimeExecutable": "perl",
+      "runtimeArgs": ["-e", "chdir '/Users/alisonjacobson/pawroutes-sa'; exec 'npx vite --port 4000'"],
+      "port": 4000
     }
   ]
 }

@@ -1,0 +1,13 @@
+{
+  "name": "PawRoutes South Africa",
+  "short_name": "PawRoutes",
+  "description": "Pet-friendly toll-free travel planner for South Africa",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFDF5",
+  "theme_color": "#C4613B",
+  "icons": [
+    { "src": "/paw-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/paw-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

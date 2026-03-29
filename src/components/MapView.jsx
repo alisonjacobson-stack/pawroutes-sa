@@ -170,6 +170,19 @@ export default function MapView({
                   {'★'.repeat(Math.round(stop.rating))}{'☆'.repeat(5 - Math.round(stop.rating))} {stop.rating}
                 </div>
               )}
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${stop.coords[0]},${stop.coords[1]}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 4,
+                  marginTop: 8, padding: '5px 12px', fontSize: 12, fontWeight: 600,
+                  background: '#3B6B4A', color: '#FFF', borderRadius: 8,
+                  textDecoration: 'none', cursor: 'pointer',
+                }}
+              >
+                Navigate 📍
+              </a>
             </div>
           </Popup>
         </Marker>

@@ -260,6 +260,49 @@ function RouteDetail({ route, stops, showToll, onToggleToll, dark, pets }) {
         ))}
       </div>
 
+      {/* Individual stop cards */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 12 }}>
+        {routeStops.map(stop => (
+          <div key={stop.id} style={{
+            padding: '10px 14px',
+            background: dark ? 'var(--card-dark)' : '#FFF',
+            border: `1px solid ${dark ? 'var(--border-dark)' : 'var(--border)'}`,
+            borderRadius: 'var(--radius-md)',
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span>{STOP_CATEGORIES[stop.category]?.icon}</span>
+                  {stop.name}
+                </div>
+                <div style={{ fontSize: 11, color: dark ? 'var(--text-secondary-dark)' : 'var(--text-muted)', marginTop: 2 }}>
+                  {stop.town} · {stop.road}
+                </div>
+                {stop.petPolicy && (
+                  <div style={{ fontSize: 11, color: 'var(--forest)', marginTop: 3 }}>
+                    🐾 {stop.petPolicy}
+                  </div>
+                )}
+              </div>
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${stop.coords[0]},${stop.coords[1]}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 4,
+                  padding: '4px 10px', fontSize: 11, fontWeight: 600,
+                  background: 'var(--forest)', color: '#FFF',
+                  borderRadius: 'var(--radius-full)',
+                  textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0,
+                }}
+              >
+                Navigate 📍
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
       {/* Comparison if toll shown */}
       {showToll && (
         <div style={{

@@ -13,6 +13,7 @@ export const CITIES = {
   plett: { name: 'Plettenberg Bay', coords: [-34.0523, 23.3716] },
   mossel: { name: 'Mossel Bay', coords: [-34.1833, 22.1455] },
   george: { name: 'George', coords: [-33.9667, 22.4500] },
+  wilderness: { name: 'Wilderness', coords: [-33.9947, 22.5761] },
 }
 
 export const ROUTES = [
@@ -251,42 +252,47 @@ export const ROUTES = [
     id: 'jhb-garden',
     name: 'Joburg → Garden Route',
     from: 'jhb',
-    to: 'george',
-    pawScore: 5,
+    to: 'wilderness',
+    pawScore: 4,
     tollRoute: {
       road: 'N1 → N12 → N2',
-      distance: 1050,
-      time: '11h 00m',
-      tollCost: 490,
+      distance: 1150,
+      time: '12h 00m',
+      tollCost: 650,
       waypoints: [
         [-26.2041, 28.0473],  // Joburg
         [-26.6849, 27.7742],  // Vereeniging
+        [-27.6504, 27.2351],  // Kroonstad
         [-29.0852, 26.1596],  // Bloemfontein
-        [-31.2333, 24.8667],  // Cradock
+        [-30.6500, 25.9667],  // Colesberg
+        [-31.8833, 25.0167],  // Graaff-Reinet area
+        [-32.3500, 24.5333],  // Cradock area
         [-33.4500, 22.0000],  // George approach
         [-33.9667, 22.4500],  // George
+        [-33.9947, 22.5761],  // Wilderness
       ],
     },
     freeRoute: {
-      road: 'R59 → N12 → R63 → N9 → R62 → N2',
-      distance: 1180,
-      time: '13h 30m',
+      road: 'R59 → R721 → R63 → N9 → R62 → N12 → N2',
+      distance: 1380,
+      time: '15h 30m',
       tollCost: 0,
       waypoints: [
         [-26.2041, 28.0473],  // Joburg
         [-26.9000, 27.4500],  // Parys
         [-27.6504, 27.2351],  // Kroonstad
         [-28.7667, 26.6667],  // Winburg
-        [-29.0852, 26.1596],  // Bloemfontein
-        [-30.2333, 25.5833],  // Hanover
+        [-29.7500, 25.8833],  // Trompsburg
+        [-30.4333, 25.5333],  // Philippolis
         [-31.2167, 24.5333],  // Middelburg EC
         [-32.2500, 24.5333],  // Graaff-Reinet
+        [-33.1000, 23.3333],  // De Rust
         [-33.3833, 22.0167],  // Oudtshoorn
+        [-33.6333, 22.0500],  // Oudtshoorn → George via R328
         [-33.9667, 22.4500],  // George
-        [-34.0356, 23.0488],  // Knysna
-        [-34.0523, 23.3716],  // Plettenberg Bay
+        [-33.9947, 22.5761],  // Wilderness
       ],
-      description: 'The ultimate SA road trip — Parys on the Vaal, through the vast Karoo, Graaff-Reinet\'s Valley of Desolation, Oudtshoorn\'s ostrich farms, then the full Garden Route coast. Two days recommended with an overnight in the Karoo. Every kind of pet-friendly stop imaginable.',
+      description: 'The ultimate SA road trip — R59 to Parys on the Vaal, through the vast Karoo via Philippolis, Graaff-Reinet\'s Valley of Desolation, the R62 through Oudtshoorn ostrich country, then down to the Garden Route coast. Two days recommended with an overnight in the Karoo. Long but incredibly scenic with pet-friendly stops everywhere.',
     },
   },
 ]

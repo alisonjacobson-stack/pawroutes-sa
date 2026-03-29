@@ -4,6 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PawRoutes SA — Pet-Friendly Travel</title>
+    <meta name="description" content="Plan toll-free road trips with your pets across South Africa. Pet-friendly stops, farm stalls, vets, and accommodation on every route.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="PawRoutes SA — Pet-Friendly Travel">
+    <meta property="og:description" content="Toll-free routes with pet-friendly stops across South Africa. Plan your road trip with your best friend.">
+    <meta property="og:image" content="https://pawroutes-sa.vercel.app/og-image.png">
+    <meta property="og:url" content="https://pawroutes-sa.vercel.app">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PawRoutes SA — Pet-Friendly Travel">
+    <meta name="twitter:description" content="Toll-free routes with pet-friendly stops across South Africa.">
+    <meta name="twitter:image" content="https://pawroutes-sa.vercel.app/og-image.png">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#C4613B">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="PawRoutes">
+
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -11,5 +33,12 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {})
+        })
+      }
+    </script>
   </body>
 </html>
