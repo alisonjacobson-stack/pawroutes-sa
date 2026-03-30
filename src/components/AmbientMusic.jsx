@@ -1,242 +1,362 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 
 /**
- * Upbeat African-inspired generative music for PawRoutes SA.
- * Web Audio API — no external files, zero copyright.
- * Feel-good road trip energy: bouncy marimba melody,
- * driving djembe rhythm, funky bass, and bright shakers.
- * Think Hakuna Matata meets a Joburg taxi ride.
+ * Disney-inspired orchestral generative music for PawRoutes SA.
+ * Web Audio API — no files, zero copyright.
+ * Rich layered composition: strings pad, flute melody, pizzicato,
+ * warm French horn, harp arpeggios, light percussion.
+ * Inspired by Up, Lion King, and Pixar scores.
  */
 
-// Major pentatonic in C — happy, bright, no sad notes
-const MELODY = [523.3, 587.3, 659.3, 784.0, 880.0, 1047, 1175] // C5-D6
-const BASS = [130.8, 164.8, 196.0, 220.0] // C3 E3 G3 A3
-const CHORD_PROG = [
-  [261.6, 329.6, 392.0], // C major
-  [220.0, 277.2, 329.6], // A minor (relative)
-  [349.2, 440.0, 523.3], // F major
-  [392.0, 493.9, 587.3], // G major (dominant)
+// D major scale — bright, cinematic, adventurous
+const SCALE = {
+  D4: 293.7, E4: 329.6, Fs4: 370.0, G4: 392.0, A4: 440.0, B4: 493.9,
+  D5: 587.3, E5: 659.3, Fs5: 740.0, G5: 784.0, A5: 880.0, B5: 987.8,
+  D6: 1175,
+}
+
+// Chord progressions — cinematic, uplifting
+const PROGRESSIONS = [
+  // I - V - vi - IV (classic uplift)
+  [[293.7, 370.0, 440.0], [440.0, 554.4, 659.3], [493.9, 587.3, 740.0], [392.0, 493.9, 587.3]],
+  // I - iii - IV - V (adventurous)
+  [[293.7, 370.0, 440.0], [370.0, 440.0, 554.4], [392.0, 493.9, 587.3], [440.0, 554.4, 659.3]],
+]
+
+// Melody phrases — pre-composed motifs that sound composed, not random
+const MELODIES = [
+  // Soaring adventure theme
+  [
+    { note: 'D5', dur: 0.5 }, { note: 'E5', dur: 0.25 }, { note: 'Fs5', dur: 0.25 },
+    { note: 'A5', dur: 1.0 }, { note: 'G5', dur: 0.5 }, { note: 'Fs5', dur: 0.5 },
+    { note: 'E5', dur: 1.0 }, { note: null, dur: 1.0 },
+  ],
+  // Gentle wandering
+  [
+    { note: 'A5', dur: 0.75 }, { note: 'G5', dur: 0.25 }, { note: 'Fs5', dur: 0.5 },
+    { note: 'D5', dur: 0.5 }, { note: 'E5', dur: 1.0 },
+    { note: 'Fs5', dur: 0.5 }, { note: 'G5', dur: 0.5 }, { note: 'A5', dur: 1.0 },
+    { note: null, dur: 0.5 },
+  ],
+  // Playful skip
+  [
+    { note: 'D5', dur: 0.25 }, { note: 'Fs5', dur: 0.25 }, { note: 'A5', dur: 0.5 },
+    { note: 'B5', dur: 0.25 }, { note: 'A5', dur: 0.25 }, { note: 'G5', dur: 0.5 },
+    { note: 'Fs5', dur: 0.5 }, { note: 'E5', dur: 0.5 }, { note: 'D5', dur: 1.0 },
+    { note: null, dur: 0.5 },
+  ],
+  // Sweeping resolution
+  [
+    { note: 'Fs5', dur: 0.5 }, { note: 'G5', dur: 0.5 }, { note: 'A5', dur: 0.5 },
+    { note: 'D6', dur: 1.5 }, { note: 'B5', dur: 0.5 },
+    { note: 'A5', dur: 0.5 }, { note: 'G5', dur: 0.5 }, { note: 'Fs5', dur: 1.0 },
+    { note: null, dur: 0.5 },
+  ],
+]
+
+// Harp arpeggio patterns
+const HARP_PATTERNS = [
+  ['D4', 'Fs4', 'A4', 'D5', 'A4', 'Fs4'],
+  ['G4', 'B4', 'D5', 'G5', 'D5', 'B4'],
+  ['A4', 'D5', 'Fs5', 'A5', 'Fs5', 'D5'],
+  ['E4', 'A4', 'B4', 'E5', 'B4', 'A4'],
 ]
 
 function createAudioEngine() {
   const ctx = new (window.AudioContext || window.webkitAudioContext)()
   const master = ctx.createGain()
-  master.gain.value = 0.3
+  master.gain.value = 0.25
   master.connect(ctx.destination)
 
-  // Compressor for punchiness
-  const compressor = ctx.createDynamicsCompressor()
-  compressor.threshold.value = -18
-  compressor.ratio.value = 4
-  compressor.connect(master)
-
-  // Short reverb
+  // Rich reverb
   const convolver = ctx.createConvolver()
-  const len = ctx.sampleRate * 0.8
-  const impulse = ctx.createBuffer(2, len, ctx.sampleRate)
+  const revLen = ctx.sampleRate * 2.5
+  const impulse = ctx.createBuffer(2, revLen, ctx.sampleRate)
   for (let ch = 0; ch < 2; ch++) {
     const d = impulse.getChannelData(ch)
-    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.5)
+    for (let i = 0; i < revLen; i++) {
+      d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / revLen, 1.8) * 0.5
+    }
   }
   convolver.buffer = impulse
-  const reverbSend = ctx.createGain()
-  reverbSend.gain.value = 0.2
-  convolver.connect(reverbSend)
-  reverbSend.connect(compressor)
+  const reverbGain = ctx.createGain()
+  reverbGain.gain.value = 0.35
+  convolver.connect(reverbGain)
+  reverbGain.connect(master)
 
   const dry = ctx.createGain()
-  dry.gain.value = 0.8
-  dry.connect(compressor)
+  dry.gain.value = 0.65
+  dry.connect(master)
 
-  // --- Marimba (bright, percussive, happy) ---
-  function playMarimba(freq, time = 0, vel = 0.15) {
+  // === STRINGS PAD (warm, cinematic) ===
+  let stringNodes = []
+  function playStrings(freqs, duration = 4) {
+    const t = ctx.currentTime
+    const padGain = ctx.createGain()
+    padGain.gain.setValueAtTime(0, t)
+    padGain.gain.linearRampToValueAtTime(0.06, t + 0.8)
+    padGain.gain.setValueAtTime(0.06, t + duration - 1)
+    padGain.gain.linearRampToValueAtTime(0, t + duration)
+
+    freqs.forEach(f => {
+      // Layer saw + sine for warm string timbre
+      const saw = ctx.createOscillator()
+      saw.type = 'sawtooth'
+      saw.frequency.value = f
+      const sawGain = ctx.createGain()
+      sawGain.gain.value = 0.012
+      // Slight vibrato
+      const vib = ctx.createOscillator()
+      vib.frequency.value = 4.5 + Math.random() * 1
+      const vibGain = ctx.createGain()
+      vibGain.gain.value = 2
+      vib.connect(vibGain)
+      vibGain.connect(saw.frequency)
+      vib.start(t)
+
+      const lp = ctx.createBiquadFilter()
+      lp.type = 'lowpass'
+      lp.frequency.value = 2000
+      lp.Q.value = 0.5
+
+      saw.connect(sawGain)
+      sawGain.connect(lp)
+
+      const sin = ctx.createOscillator()
+      sin.type = 'sine'
+      sin.frequency.value = f
+      const sinGain = ctx.createGain()
+      sinGain.gain.value = 0.025
+      sin.connect(sinGain)
+
+      lp.connect(padGain)
+      sinGain.connect(padGain)
+
+      saw.start(t)
+      sin.start(t)
+      saw.stop(t + duration + 0.5)
+      sin.stop(t + duration + 0.5)
+      vib.stop(t + duration + 0.5)
+      stringNodes.push(saw, sin, vib)
+    })
+
+    padGain.connect(dry)
+    padGain.connect(convolver)
+  }
+
+  // === FLUTE MELODY (warm, singing) ===
+  function playFlute(freq, duration, time = 0) {
     const t = ctx.currentTime + time
-    // Fundamental
     const osc = ctx.createOscillator()
     osc.type = 'sine'
     osc.frequency.value = freq
-    // 4th harmonic (marimba character)
-    const osc2 = ctx.createOscillator()
-    osc2.type = 'sine'
-    osc2.frequency.value = freq * 4.01
-    const g2 = ctx.createGain()
-    g2.gain.setValueAtTime(vel * 0.3, t)
-    g2.gain.exponentialRampToValueAtTime(0.001, t + 0.15)
-    osc2.connect(g2)
+
+    // Breath noise
+    const noise = ctx.createOscillator()
+    noise.type = 'triangle'
+    noise.frequency.value = freq * 2.01
+    const noiseGain = ctx.createGain()
+    noiseGain.gain.value = 0.008
+
+    // Vibrato (slow, musical)
+    const vib = ctx.createOscillator()
+    vib.frequency.value = 5
+    const vibGain = ctx.createGain()
+    vibGain.gain.value = 3
+    vib.connect(vibGain)
+    vibGain.connect(osc.frequency)
 
     const gain = ctx.createGain()
-    gain.gain.setValueAtTime(vel, t)
-    gain.gain.exponentialRampToValueAtTime(vel * 0.3, t + 0.08)
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6)
+    const attack = Math.min(0.12, duration * 0.15)
+    gain.gain.setValueAtTime(0, t)
+    gain.gain.linearRampToValueAtTime(0.09, t + attack)
+    gain.gain.setValueAtTime(0.09, t + duration * 0.7)
+    gain.gain.exponentialRampToValueAtTime(0.001, t + duration)
 
     osc.connect(gain)
-    g2.connect(gain)
+    noise.connect(noiseGain)
+    noiseGain.connect(gain)
     gain.connect(dry)
     gain.connect(convolver)
+
     osc.start(t)
-    osc2.start(t)
-    osc.stop(t + 0.7)
-    osc2.stop(t + 0.2)
+    noise.start(t)
+    vib.start(t)
+    osc.stop(t + duration + 0.1)
+    noise.stop(t + duration + 0.1)
+    vib.stop(t + duration + 0.1)
   }
 
-  // --- Funky bass (bouncy, syncopated) ---
-  function playBass(freq, time = 0) {
+  // === PIZZICATO (plucky strings, like Up theme) ===
+  function playPizz(freq, time = 0) {
     const t = ctx.currentTime + time
     const osc = ctx.createOscillator()
     osc.type = 'triangle'
-    osc.frequency.setValueAtTime(freq, t)
-    osc.frequency.exponentialRampToValueAtTime(freq * 0.98, t + 0.2)
+    osc.frequency.value = freq
 
     const gain = ctx.createGain()
-    gain.gain.setValueAtTime(0.18, t)
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35)
+    gain.gain.setValueAtTime(0.12, t)
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.3)
 
-    const filter = ctx.createBiquadFilter()
-    filter.type = 'lowpass'
-    filter.frequency.value = 300
-
-    osc.connect(filter)
-    filter.connect(gain)
+    osc.connect(gain)
     gain.connect(dry)
+    gain.connect(convolver)
     osc.start(t)
     osc.stop(t + 0.4)
   }
 
-  // --- Djembe (punchy, driving) ---
-  function playDjembe(type = 'bass', time = 0) {
-    const t = ctx.currentTime + time
-    const len = type === 'slap' ? 0.06 : 0.12
-    const buf = ctx.createBuffer(1, ctx.sampleRate * len, ctx.sampleRate)
-    const d = buf.getChannelData(0)
-    for (let i = 0; i < d.length; i++) {
-      d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, type === 'slap' ? 6 : 3)
-    }
-    const src = ctx.createBufferSource()
-    src.buffer = buf
-
-    const filter = ctx.createBiquadFilter()
-    filter.type = 'bandpass'
-    filter.frequency.value = type === 'slap' ? 800 : type === 'tone' ? 350 : 180
-    filter.Q.value = type === 'slap' ? 2 : 1
-
-    const gain = ctx.createGain()
-    gain.gain.value = type === 'slap' ? 0.12 : type === 'tone' ? 0.1 : 0.15
-
-    src.connect(filter)
-    filter.connect(gain)
-    gain.connect(dry)
-    src.start(t)
-  }
-
-  // --- Shaker (bright, driving 16ths) ---
-  function playShaker(time = 0, accent = false) {
-    const t = ctx.currentTime + time
-    const len = 0.03
-    const buf = ctx.createBuffer(1, ctx.sampleRate * len, ctx.sampleRate)
-    const d = buf.getChannelData(0)
-    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 4)
-    const src = ctx.createBufferSource()
-    src.buffer = buf
-
-    const hp = ctx.createBiquadFilter()
-    hp.type = 'highpass'
-    hp.frequency.value = 6000
-
-    const gain = ctx.createGain()
-    gain.gain.value = accent ? 0.06 : 0.03
-
-    src.connect(hp)
-    hp.connect(gain)
-    gain.connect(dry)
-    src.start(t)
-  }
-
-  // --- Chord stab (warm, rhythmic) ---
-  function playChord(freqs, time = 0) {
-    const t = ctx.currentTime + time
-    freqs.forEach(f => {
+  // === HARP ARPEGGIO ===
+  function playHarpArpeggio(pattern, time = 0) {
+    pattern.forEach((noteName, i) => {
+      const freq = SCALE[noteName]
+      if (!freq) return
+      const t = ctx.currentTime + time + i * 0.12
       const osc = ctx.createOscillator()
-      osc.type = 'triangle'
-      osc.frequency.value = f
+      osc.type = 'sine'
+      osc.frequency.value = freq
+
+      const h2 = ctx.createOscillator()
+      h2.type = 'sine'
+      h2.frequency.value = freq * 2
+      const h2g = ctx.createGain()
+      h2g.gain.value = 0.015
+
       const gain = ctx.createGain()
-      gain.gain.setValueAtTime(0.04, t)
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4)
+      gain.gain.setValueAtTime(0.06, t)
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.8)
+
       osc.connect(gain)
+      h2.connect(h2g)
+      h2g.connect(gain)
       gain.connect(dry)
       gain.connect(convolver)
       osc.start(t)
-      osc.stop(t + 0.5)
+      h2.start(t)
+      osc.stop(t + 1)
+      h2.stop(t + 0.5)
     })
   }
 
-  // --- Pattern sequencer ---
+  // === WARM HORN (French horn swell) ===
+  function playHorn(freq, duration, time = 0) {
+    const t = ctx.currentTime + time
+    const osc = ctx.createOscillator()
+    osc.type = 'sawtooth'
+    osc.frequency.value = freq
+
+    const lp = ctx.createBiquadFilter()
+    lp.type = 'lowpass'
+    lp.frequency.setValueAtTime(400, t)
+    lp.frequency.linearRampToValueAtTime(1200, t + duration * 0.4)
+    lp.frequency.linearRampToValueAtTime(600, t + duration)
+
+    const gain = ctx.createGain()
+    gain.gain.setValueAtTime(0, t)
+    gain.gain.linearRampToValueAtTime(0.04, t + duration * 0.3)
+    gain.gain.setValueAtTime(0.04, t + duration * 0.6)
+    gain.gain.linearRampToValueAtTime(0, t + duration)
+
+    osc.connect(lp)
+    lp.connect(gain)
+    gain.connect(dry)
+    gain.connect(convolver)
+    osc.start(t)
+    osc.stop(t + duration + 0.2)
+  }
+
+  // === GENTLE PERCUSSION (triangle, soft) ===
+  function playTriangleHit(time = 0) {
+    const t = ctx.currentTime + time
+    const osc = ctx.createOscillator()
+    osc.type = 'sine'
+    osc.frequency.value = 4200
+    const gain = ctx.createGain()
+    gain.gain.setValueAtTime(0.02, t)
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 1.5)
+    osc.connect(gain)
+    gain.connect(dry)
+    gain.connect(convolver)
+    osc.start(t)
+    osc.stop(t + 1.6)
+  }
+
+  // === ORCHESTRAL SEQUENCER ===
   let running = false
   let timerId = null
-  let beat = 0
-  let chordIdx = 0
-  const BPM = 116 // upbeat, feel-good tempo
-  const beatTime = 60 / BPM / 4 // 16th note
+  let bar = 0
+  let progIdx = 0
 
-  function tick() {
+  const BPM = 80 // cinematic, not rushed
+  const barDuration = 60 / BPM * 4 // 4 beats per bar in seconds
+
+  function playBar() {
     if (!running) return
-    const b = beat % 16 // 16 steps per bar
 
-    // Shaker on every 16th (accent on 1, 5, 9, 13)
-    playShaker(0, b % 4 === 0)
+    const prog = PROGRESSIONS[progIdx % PROGRESSIONS.length]
+    const chordIdx = bar % 4
+    const chord = prog[chordIdx]
 
-    // Djembe pattern: classic 4/4 with syncopation
-    if (b === 0) playDjembe('bass')
-    if (b === 4) playDjembe('tone')
-    if (b === 6) playDjembe('slap')
-    if (b === 8) playDjembe('bass')
-    if (b === 10) playDjembe('tone')
-    if (b === 13) playDjembe('slap')
+    // Strings pad — every bar, crossfading
+    playStrings(chord, barDuration + 0.5)
 
-    // Bass on 1 and syncopated hits
-    if (b === 0) playBass(BASS[chordIdx % BASS.length])
-    if (b === 6) playBass(BASS[(chordIdx + 1) % BASS.length])
-    if (b === 12) playBass(BASS[chordIdx % BASS.length] * 1.5)
-
-    // Marimba melody — bouncy pattern, different each bar
-    if (b === 0) playMarimba(MELODY[Math.floor(Math.random() * 4)], 0, 0.18)
-    if (b === 3) playMarimba(MELODY[Math.floor(Math.random() * 5)], 0, 0.12)
-    if (b === 4) playMarimba(MELODY[Math.floor(Math.random() * 5) + 1], 0, 0.15)
-    if (b === 7) playMarimba(MELODY[Math.floor(Math.random() * 4) + 2], 0, 0.1)
-    if (b === 8) playMarimba(MELODY[Math.floor(Math.random() * 3) + 3], 0, 0.16)
-    if (b === 11) playMarimba(MELODY[Math.floor(Math.random() * 5)], 0, 0.13)
-    if (b === 14) playMarimba(MELODY[Math.floor(Math.random() * 4) + 1], 0, 0.1)
-
-    // Second marimba voice — higher, call-and-response
-    if (b === 2 && Math.random() > 0.3) playMarimba(MELODY[4 + Math.floor(Math.random() * 3)], 0, 0.08)
-    if (b === 10 && Math.random() > 0.4) playMarimba(MELODY[5 + Math.floor(Math.random() * 2)], 0, 0.07)
-
-    // Chord stab on beat 1 of every 2nd bar
-    if (b === 0 && beat % 32 === 0) {
-      playChord(CHORD_PROG[chordIdx % CHORD_PROG.length])
-      chordIdx++
+    // Melody — play a phrase every 2 bars
+    if (bar % 2 === 0) {
+      const phrase = MELODIES[Math.floor(Math.random() * MELODIES.length)]
+      let offset = 0
+      const beatDur = 60 / BPM
+      phrase.forEach(({ note, dur }) => {
+        if (note && SCALE[note]) {
+          playFlute(SCALE[note], dur * beatDur * 0.9, offset)
+        }
+        offset += dur * beatDur
+      })
     }
 
-    beat++
-    timerId = setTimeout(tick, beatTime * 1000)
+    // Pizzicato on beats 1 and 3
+    playPizz(chord[0] / 2, 0) // bass pizz
+    playPizz(chord[0] / 2, barDuration / 2) // beat 3
+
+    // Harp arpeggio — every 4th bar
+    if (bar % 4 === 0) {
+      const pattern = HARP_PATTERNS[Math.floor(Math.random() * HARP_PATTERNS.length)]
+      playHarpArpeggio(pattern, barDuration * 0.5)
+    }
+
+    // Horn swell — every 8 bars (the big moment)
+    if (bar % 8 === 0 && bar > 0) {
+      playHorn(chord[0] / 2, barDuration * 2, 0)
+    }
+
+    // Triangle on beat 1 of every other bar
+    if (bar % 2 === 0) {
+      playTriangleHit(0)
+    }
+
+    // Change progression every 16 bars
+    if (bar % 16 === 15) {
+      progIdx++
+    }
+
+    bar++
+    timerId = setTimeout(playBar, barDuration * 1000)
   }
 
   function start() {
     if (running) return
     if (ctx.state === 'suspended') ctx.resume()
     running = true
-    beat = 0
-    chordIdx = 0
-    tick()
+    bar = 0
+    progIdx = 0
+    playBar()
   }
 
   function stop() {
     running = false
     if (timerId) clearTimeout(timerId)
-    timerId = null
   }
 
   function setVolume(v) {
-    master.gain.linearRampToValueAtTime(v, ctx.currentTime + 0.3)
+    master.gain.linearRampToValueAtTime(v, ctx.currentTime + 0.5)
   }
 
   return { start, stop, setVolume, ctx }
@@ -244,7 +364,7 @@ function createAudioEngine() {
 
 export default function AmbientMusic({ dark }) {
   const [playing, setPlaying] = useState(false)
-  const [volume, setVolume] = useState(0.3)
+  const [volume, setVolume] = useState(0.25)
   const engineRef = useRef(null)
 
   const toggle = useCallback(() => {
@@ -277,66 +397,55 @@ export default function AmbientMusic({ dark }) {
 
   return (
     <div style={{
-      position: 'fixed', bottom: 16, right: 16, zIndex: 200,
+      position: 'fixed', bottom: 16, left: 16, zIndex: 200,
       display: 'flex', alignItems: 'center', gap: 8,
-      padding: playing ? '8px 14px' : '8px 12px',
-      background: dark ? 'rgba(20,18,16,0.94)' : 'rgba(253,250,243,0.96)',
+      padding: playing ? '6px 12px' : '6px 10px',
+      background: dark ? 'rgba(20,18,16,0.92)' : 'rgba(253,250,243,0.94)',
       borderRadius: 'var(--radius-full)',
-      boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
+      boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
       backdropFilter: 'blur(12px)',
-      border: `1px solid ${dark ? 'var(--border-dark)' : 'rgba(0,0,0,0.06)'}`,
+      border: `1px solid ${dark ? 'var(--border-dark)' : 'rgba(0,0,0,0.05)'}`,
       transition: 'all 0.3s var(--ease-out)',
     }}>
       <button
         onClick={toggle}
-        title={playing ? 'Sound off' : 'Play road trip vibes'}
+        title={playing ? 'Sound off' : 'Play soundtrack'}
         style={{
-          width: 36, height: 36, borderRadius: '50%',
+          width: 32, height: 32, borderRadius: '50%',
           background: playing ? 'var(--terracotta)' : (dark ? 'var(--card-dark)' : 'var(--sand-light)'),
           color: playing ? '#FFF' : 'inherit',
           border: 'none', cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 18,
+          fontSize: 15,
           transition: 'all 0.2s var(--ease-out)',
-          boxShadow: playing ? '0 2px 8px rgba(191,91,58,0.3)' : 'none',
+          boxShadow: playing ? '0 2px 6px rgba(191,91,58,0.25)' : 'none',
         }}
-        onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
+        onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.06)'}
         onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
       >
-        {playing ? '🔊' : '🔇'}
+        {playing ? '♪' : '♪'}
       </button>
 
       {playing && (
-        <>
-          <input
-            type="range" min="0" max="0.5" step="0.01"
-            value={volume}
-            onChange={handleVolume}
-            title={`Volume: ${Math.round(volume / 0.5 * 100)}%`}
-            style={{
-              width: 70, height: 3,
-              appearance: 'none', WebkitAppearance: 'none',
-              background: `linear-gradient(to right, var(--terracotta) ${volume/0.5*100}%, ${dark ? 'var(--border-dark)' : '#ddd'} ${volume/0.5*100}%)`,
-              borderRadius: 2, outline: 'none', cursor: 'pointer',
-            }}
-          />
-          <span style={{
-            fontSize: 10, fontWeight: 600,
-            color: dark ? 'var(--text-secondary-dark)' : 'var(--text-muted)',
-            minWidth: 18, textAlign: 'center',
-          }}>
-            {Math.round(volume / 0.5 * 100)}%
-          </span>
-        </>
+        <input
+          type="range" min="0" max="0.5" step="0.01"
+          value={volume}
+          onChange={handleVolume}
+          style={{
+            width: 56, height: 3,
+            appearance: 'none', WebkitAppearance: 'none',
+            background: `linear-gradient(to right, var(--terracotta) ${volume/0.5*100}%, ${dark ? 'var(--border-dark)' : '#ddd'} ${volume/0.5*100}%)`,
+            borderRadius: 2, outline: 'none', cursor: 'pointer',
+          }}
+        />
       )}
 
       {!playing && (
         <span style={{
-          fontSize: 11, fontWeight: 500,
+          fontSize: 10, fontWeight: 500, letterSpacing: '0.03em',
           color: dark ? 'var(--text-secondary-dark)' : 'var(--text-muted)',
-          letterSpacing: '0.02em',
         }}>
-          Vibes
+          Soundtrack
         </span>
       )}
     </div>
