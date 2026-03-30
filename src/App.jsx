@@ -1,33 +1,44 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo, lazy, Suspense } from 'react'
 import MapView from './components/MapView'
 import RoutePanel from './components/RoutePanel'
-import PackListModal from './components/PackListModal'
-import AlertsPanel from './components/AlertsPanel'
 import Header from './components/Header'
 import MyPackPanel from './components/MyPackPanel'
-import TripTimeline from './components/TripTimeline'
-import VetSOS from './components/VetSOS'
-import TripCostCalculator from './components/TripCostCalculator'
-import PetPassport from './components/PetPassport'
-import ShareTrip from './components/ShareTrip'
-import Achievements from './components/Achievements'
-import WeatherRoute from './components/WeatherRoute'
-import OfflineDownload from './components/OfflineDownload'
-import TravelStats from './components/TravelStats'
-import PassportStamps from './components/PassportStamps'
-import PetTravelCard from './components/PetTravelCard'
-import PackIntroCard from './components/PackIntroCard'
-import TripWrapped from './components/TripWrapped'
-import TripCountdown from './components/TripCountdown'
-import RouteWishlist from './components/RouteWishlist'
-import PostcardGenerator from './components/PostcardGenerator'
-import ListVenueModal from './components/ListVenueModal'
 import ListVenueCTA from './components/ListVenueCTA'
-import PoliciesModal from './components/PoliciesModal'
 import AmbientMusic from './components/AmbientMusic'
+import MobileNav from './components/MobileNav'
 import { ROUTES, CITIES } from './data/routes'
 import { STOPS, STOP_CATEGORIES } from './data/stops'
 import { SEASONAL_ALERTS } from './data/packList'
+
+// Code-split all modals — they only load when opened
+const PackListModal = lazy(() => import('./components/PackListModal'))
+const AlertsPanel = lazy(() => import('./components/AlertsPanel'))
+const TripTimeline = lazy(() => import('./components/TripTimeline'))
+const VetSOS = lazy(() => import('./components/VetSOS'))
+const TripCostCalculator = lazy(() => import('./components/TripCostCalculator'))
+const PetPassport = lazy(() => import('./components/PetPassport'))
+const ShareTrip = lazy(() => import('./components/ShareTrip'))
+const Achievements = lazy(() => import('./components/Achievements'))
+const WeatherRoute = lazy(() => import('./components/WeatherRoute'))
+const OfflineDownload = lazy(() => import('./components/OfflineDownload'))
+const TravelStats = lazy(() => import('./components/TravelStats'))
+const PassportStamps = lazy(() => import('./components/PassportStamps'))
+const PetTravelCard = lazy(() => import('./components/PetTravelCard'))
+const PackIntroCard = lazy(() => import('./components/PackIntroCard'))
+const TripWrapped = lazy(() => import('./components/TripWrapped'))
+const TripCountdown = lazy(() => import('./components/TripCountdown'))
+const RouteWishlist = lazy(() => import('./components/RouteWishlist'))
+const PostcardGenerator = lazy(() => import('./components/PostcardGenerator'))
+const ListVenueModal = lazy(() => import('./components/ListVenueModal'))
+const PoliciesModal = lazy(() => import('./components/PoliciesModal'))
+const FirstAidGuide = lazy(() => import('./components/FirstAidGuide'))
+const SeasonalGuides = lazy(() => import('./components/SeasonalGuides'))
+const MultiDayPlanner = lazy(() => import('./components/MultiDayPlanner'))
+const TripJournal = lazy(() => import('./components/TripJournal'))
+const FeaturedListings = lazy(() => import('./components/FeaturedListings'))
+const PetInsurance = lazy(() => import('./components/PetInsurance'))
+const NearMe = lazy(() => import('./components/NearMe'))
+const AnalyticsDashboard = lazy(() => import('./components/AnalyticsDashboard'))
 
 export default function App() {
   const [dark, setDark] = useState(false)
@@ -57,6 +68,12 @@ export default function App() {
   const [showPostcard, setShowPostcard] = useState(false)
   const [showListVenue, setShowListVenue] = useState(false)
   const [showPolicies, setShowPolicies] = useState(false)
+  const [showFirstAid, setShowFirstAid] = useState(false)
+  const [showSeasonalGuides, setShowSeasonalGuides] = useState(false)
+  const [showMultiDay, setShowMultiDay] = useState(false)
+  const [showJournal, setShowJournal] = useState(false)
+  const [showAnalytics, setShowAnalytics] = useState(false)
+  const [mobileTab, setMobileTab] = useState('routes')
   const [completedRoutes, setCompletedRoutes] = useState(() => {
     try { return JSON.parse(localStorage.getItem('pawroutes-completed') || '[]') } catch { return [] }
   })
@@ -415,6 +432,36 @@ export default function App() {
               )}
             </button>
 
+            {/* First Aid Guide */}
+            <button onClick={() => setShowFirstAid(true)}
+              style={fabStyle()} title="Pet First Aid Guide"
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            >🩺</button>
+
+            {/* Seasonal Guides */}
+            <button onClick={() => setShowSeasonalGuides(true)}
+              style={fabStyle()} title="Seasonal Route Guides"
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            >🗓️</button>
+
+            {/* Multi-day Planner */}
+            <button onClick={() => setShowMultiDay(true)}
+              style={fabStyle()} title="Multi-Day Trip Planner"
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            >📅</button>
+
+            {/* Trip Journal */}
+            {completedRoutes.length > 0 && (
+              <button onClick={() => setShowJournal(true)}
+                style={fabStyle()} title="Trip Journal"
+                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
+                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+              >📔</button>
+            )}
+
             {/* Pack list */}
             <button onClick={() => setShowPackList(true)}
               style={fabStyle('var(--terracotta)', '0 4px 16px rgba(196,97,59,0.3)')}
@@ -489,7 +536,8 @@ export default function App() {
         </main>
       </div>
 
-      {/* === All Modals === */}
+      {/* === All Modals (lazy-loaded) === */}
+      <Suspense fallback={null}>
       <PackListModal open={showPackList} onClose={() => setShowPackList(false)} dark={dark} pets={pets} />
       <AlertsPanel open={showAlerts} onClose={() => setShowAlerts(false)} dark={dark} />
       <TripTimeline open={showTimeline} onClose={() => setShowTimeline(false)} route={selectedRoute} stops={visibleStops} pets={pets} dark={dark} />
@@ -508,9 +556,27 @@ export default function App() {
       <PostcardGenerator open={showPostcard} onClose={() => setShowPostcard(false)} stops={STOPS} pets={pets} dark={dark} />
       <ListVenueModal open={showListVenue} onClose={() => setShowListVenue(false)} dark={dark} onViewPolicies={() => { setShowListVenue(false); setShowPolicies(true) }} />
       <PoliciesModal open={showPolicies} onClose={() => setShowPolicies(false)} dark={dark} />
+      <FirstAidGuide open={showFirstAid} onClose={() => setShowFirstAid(false)} dark={dark} />
+      <SeasonalGuides open={showSeasonalGuides} onClose={() => setShowSeasonalGuides(false)} dark={dark} routes={ROUTES} />
+      <MultiDayPlanner open={showMultiDay} onClose={() => setShowMultiDay(false)} routes={ROUTES} stops={STOPS} pets={pets} dark={dark} />
+      <TripJournal open={showJournal} onClose={() => setShowJournal(false)} routes={ROUTES} completedRoutes={completedRoutes} pets={pets} dark={dark} />
+      <AnalyticsDashboard open={showAnalytics} onClose={() => setShowAnalytics(false)} routes={ROUTES} stops={STOPS} dark={dark} />
+      </Suspense>
 
       {/* Ambient music player */}
       <AmbientMusic dark={dark} />
+
+      {/* Mobile bottom nav */}
+      <MobileNav
+        dark={dark}
+        selectedRoute={selectedRoute}
+        activeTab={mobileTab}
+        onShowRoutes={() => { setPanelOpen(true); setMobileTab('routes') }}
+        onShowNearMe={() => setMobileTab('nearme')}
+        onShowVetSOS={() => { setShowVetSOS(true); setMobileTab('vet') }}
+        onShowFirstAid={() => { setShowFirstAid(true); setMobileTab('firstaid') }}
+        onShowMore={() => setMobileTab('more')}
+      />
 
       {/* Responsive styles */}
       <style>{`

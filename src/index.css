@@ -549,6 +549,21 @@ body.dark.night-driving header {
   filter: brightness(0.6) saturate(0.5);
 }
 
+/* Mobile bottom nav — only on small screens */
+@media (max-width: 768px) {
+  .mobile-bottom-nav {
+    display: flex !important;
+  }
+  /* Add bottom padding so content isn't hidden behind nav */
+  body {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  /* Move music player above nav */
+  .music-player-fixed {
+    bottom: 72px !important;
+  }
+}
+
 /* Utility */
 .sr-only {
   position: absolute;
