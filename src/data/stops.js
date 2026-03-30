@@ -1128,7 +1128,7 @@ export const STOPS = [
     price: 'Mains R65–R120',
   },
   {
-    id: 'graaff-reinet-stay',
+    id: 'graaff-reinet-camdeboo',
     routeId: 'jhb-garden',
     category: 'stay',
     name: 'Camdeboo Cottages',
@@ -1142,7 +1142,7 @@ export const STOPS = [
     price: 'From R850/night',
   },
   {
-    id: 'oudtshoorn-restaurant',
+    id: 'oudtshoorn-jemimas-garden',
     routeId: 'jhb-garden',
     category: 'restaurant',
     name: 'Jemima\'s Restaurant',
@@ -1156,7 +1156,7 @@ export const STOPS = [
     price: 'Mains R95–R195',
   },
   {
-    id: 'george-vet',
+    id: 'george-animal-hospital',
     routeId: 'jhb-garden',
     category: 'vet',
     name: 'George Animal Hospital',
